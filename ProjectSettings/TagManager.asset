@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Slot
   - Card
+  - InfoPanel
   layers:
   - Default
   - TransparentFX

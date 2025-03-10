@@ -15,7 +15,7 @@ public class EquipPanelManager : MonoBehaviour
         }
     }
 
-
+    public List<Card> Cards;
     public Slot EngineSlot;
     public Slot TransmissionSlot;
     public Slot MirrorSlot;
@@ -23,25 +23,10 @@ public class EquipPanelManager : MonoBehaviour
     public List<Slot> WheelSlot;
 
 
-    public void AddCardToPanel(GameObject Card, Slot slot) {
-        if (!slot.isOccupied &&
-        (Card.GetComponent<Card>().cardSchema.cardType == slot.cardType ||
-        Card.GetComponent<Card>().cardSchema.cardType == CardSchema.CardType.ANY)) {
-            slot.item = Card;
-            Card.transform.SetParent(slot.transform, true); // Set the parent of the card to the slot
-            slot.isOccupied = true;
-            Debug.Log("Card added to slot: " + slot.name);
-        }
-
-    }
 
 
-    public void RemoveCardFromPanel(GameObject Card, Slot slot) {
-        if (slot.item == Card) {
-            slot.item = null;
-            slot.isOccupied = false;
-        }
-    }
+
+
 
 
     public List<CardSchema> GetCards() {

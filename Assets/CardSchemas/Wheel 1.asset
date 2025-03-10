@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: Wheel 1
   m_EditorClassIdentifier: 
+  cardEffectName: 
   cardName: Non-Slip Wheels
   cardDescription: +3 Acceleration
   cardImage: {fileID: 0}
@@ -19,4 +20,6 @@ MonoBehaviour:
   cardType: 5
   cardQuantityModified: 2
   cardQuantityType: 0
+  cardBrand: 3
+  cardRarity: 0
   cardQuantityValue: 3

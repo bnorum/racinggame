@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: Transmission 1
+  m_Name: Engine 4
   m_EditorClassIdentifier: 
-  cardName: Dirty Transmission
-  cardDescription: Acceleration +2
+  cardEffectName: VolatileEffect
+  cardName: Volatile Engine
+  cardDescription: Speed +25, 1/3 chance of exploding after race
   cardImage: {fileID: 0}
   price: 4
-  cardType: 2
-  cardQuantityModified: 2
+  cardType: 1
+  cardQuantityModified: 0
   cardQuantityType: 0
-  cardQuantityValue: 2
+  cardBrand: 3
+  cardRarity: 0
+  cardQuantityValue: 25

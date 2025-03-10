@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: Engine 3
   m_EditorClassIdentifier: 
+  cardID: 102
   cardName: Bigger Engine
   cardDescription: Speed +10
   cardImage: {fileID: 0}

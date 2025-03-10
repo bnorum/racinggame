@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: Transmission 2
+  m_Name: Mirror 1
   m_EditorClassIdentifier: 
-  cardName: Dirty Transmission
-  cardDescription: Acceleration *2
+  cardEffectName: 
+  cardName: Fuzzy Dice
+  cardDescription: Driver Power +0.2
   cardImage: {fileID: 0}
-  price: 8
-  cardType: 2
-  cardQuantityModified: 2
+  price: 4
+  cardType: 3
+  cardQuantityModified: 1
   cardQuantityType: 1
-  cardQuantityValue: 2
+  cardBrand: 0
+  cardRarity: 0
+  cardQuantityValue: 0.2

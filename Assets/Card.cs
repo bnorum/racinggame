@@ -8,14 +8,13 @@ using System.Linq;
 public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 
+    public string cardEffectName;
+
     public CardSchema cardSchema;
 
     public GameObject cardInfoPanel;
     public GameObject cardInfoPanelTargetLeft;
     public GameObject cardInfoPanelTargetRight;
-    public TextMeshProUGUI cardName;
-    public TextMeshProUGUI cardDescription;
-    public TextMeshProUGUI cardType;
     public Image cardImage;
 
     public bool isOnSlot = true;
@@ -31,23 +30,29 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public int price;
 
+    public bool isEnabled = true;
+    public Image isEnabledImage;
 
+    public CardEffect cardEffect;
     // Start is called before the first frame update
     void Start()
     {
         trashCan = GameObject.Find("Trash");
         currentCanvas = GameObject.Find("ShopCanvas").GetComponent<Canvas>();
-        EquipPanel = GameObject.Find("EquipPanel");
-        ShopPanel = GameObject.Find("ShopPanel");
+        EquipPanel = EquipPanelManager.Instance.gameObject;
+        ShopPanel = ShopPanelManager.Instance.gameObject;
+        cardInfoPanel = GameObject.FindGameObjectWithTag("InfoPanel");
 
-        cardName.text = cardSchema.cardName;
-        cardDescription.text = cardSchema.cardDescription;
-        cardType.text = cardSchema.cardType.ToString();
+        cardEffectName = cardSchema.cardEffectName;
         cardImage.sprite = cardSchema.cardImage;
         price = cardSchema.price;
 
         slots = GameObject.FindGameObjectsWithTag("Slot").ToList();
         currentSlot = transform.parent.GetComponent<Slot>();
+
+        if (cardEffectName != "") cardEffect = gameObject.AddComponent(System.Type.GetType(cardEffectName)) as CardEffect;
+
+        isEnabled = true;
 
     }
 
@@ -57,20 +62,25 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         if (isOnSlot) {
             transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * 5f);
         }
-        if (IsPointerOverUIElement(GetComponent<RectTransform>())) {
-            cardInfoPanel.SetActive(true);
-        } else {
-            cardInfoPanel.SetActive(false);
+        if (IsPointerOverUIElement(GetComponent<RectTransform>()) && CardInfoPanel.Instance.selectedCard == GetComponent<Card>()) {
+            cardInfoPanel.GetComponent<CardInfoPanel>().isActive = true;
+        } else if (CardInfoPanel.Instance.selectedCard == GetComponent<Card>()) {
+            cardInfoPanel.GetComponent<CardInfoPanel>().isActive = false;
         }
 
-        if (transform.position.x < Screen.width / 2)
+
+
+        if (transform.position.x < Screen.width / 2 && CardInfoPanel.Instance.selectedCard == GetComponent<Card>())
         {
             cardInfoPanel.transform.position = cardInfoPanelTargetRight.transform.position;
         }
-        else if (transform.position.x > Screen.width / 2)
+        else if (transform.position.x > Screen.width / 2 && CardInfoPanel.Instance.selectedCard == GetComponent<Card>())
         {
             cardInfoPanel.transform.position = cardInfoPanelTargetLeft.transform.position;
         }
+
+
+        isEnabledImage.gameObject.SetActive(!isEnabled);
     }
 
 
@@ -84,6 +94,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         }
         */
         isOnSlot = false;
+        cardInfoPanel.GetComponent<CardInfoPanel>().UpdateCardInfo(this);
         Debug.Log("Drag started!");
     }
 
@@ -105,6 +116,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        cardInfoPanel.GetComponent<CardInfoPanel>().isActive = false;
+        cardInfoPanel.GetComponent<CardInfoPanel>().selectedCard = null;
 
         isOnSlot = true;
 
@@ -145,4 +158,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         // Check if the screen position is within the RectTransform
         return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPosition, null);
     }
+
+
 }

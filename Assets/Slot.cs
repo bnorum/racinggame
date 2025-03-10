@@ -28,6 +28,8 @@ public class Slot : MonoBehaviour
                 slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
             } else {
                 slotType.text = cardType.ToString();
+                EquipPanelManager.Instance.Cards.Add(card);
+
             }
             item.transform.SetParent(transform, true); // Set the parent of the card to the slot
             Debug.Log("Card added to slot: " + name);
@@ -38,7 +40,11 @@ public class Slot : MonoBehaviour
         if (isOccupied) {
             isOccupied = false;
             item.transform.SetParent(null, true); // Set the parent of the card to null
+            if (!isShop) {
+                EquipPanelManager.Instance.Cards.Remove(item.GetComponent<Card>());
+            }
             item = null;
+
             Debug.Log("Card removed from slot: " + name);
         }
     }
