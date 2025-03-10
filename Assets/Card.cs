@@ -1,0 +1,148 @@
+using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+{
+
+    public CardSchema cardSchema;
+
+    public GameObject cardInfoPanel;
+    public GameObject cardInfoPanelTargetLeft;
+    public GameObject cardInfoPanelTargetRight;
+    public TextMeshProUGUI cardName;
+    public TextMeshProUGUI cardDescription;
+    public TextMeshProUGUI cardType;
+    public Image cardImage;
+
+    public bool isOnSlot = true;
+
+    public Canvas currentCanvas;
+
+    public GameObject EquipPanel;
+    public GameObject ShopPanel;
+    public GameObject trashCan;
+
+    public List<GameObject> slots;
+    public Slot currentSlot;
+
+    public int price;
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        trashCan = GameObject.Find("Trash");
+        currentCanvas = GameObject.Find("ShopCanvas").GetComponent<Canvas>();
+        EquipPanel = GameObject.Find("EquipPanel");
+        ShopPanel = GameObject.Find("ShopPanel");
+
+        cardName.text = cardSchema.cardName;
+        cardDescription.text = cardSchema.cardDescription;
+        cardType.text = cardSchema.cardType.ToString();
+        cardImage.sprite = cardSchema.cardImage;
+        price = cardSchema.price;
+
+        slots = GameObject.FindGameObjectsWithTag("Slot").ToList();
+        currentSlot = transform.parent.GetComponent<Slot>();
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isOnSlot) {
+            transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, Time.deltaTime * 5f);
+        }
+        if (IsPointerOverUIElement(GetComponent<RectTransform>())) {
+            cardInfoPanel.SetActive(true);
+        } else {
+            cardInfoPanel.SetActive(false);
+        }
+
+        if (transform.position.x < Screen.width / 2)
+        {
+            cardInfoPanel.transform.position = cardInfoPanelTargetRight.transform.position;
+        }
+        else if (transform.position.x > Screen.width / 2)
+        {
+            cardInfoPanel.transform.position = cardInfoPanelTargetLeft.transform.position;
+        }
+    }
+
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        /*
+        foreach (GameObject slot in slots) {
+            if (IsPointerOverUIElement(slot.GetComponent<RectTransform>())) {
+                slot.GetComponent<Slot>().AddCardToSlot(gameObject.GetComponent<Card>());
+            }
+        }
+        */
+        isOnSlot = false;
+        Debug.Log("Drag started!");
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+
+        // Update the position of the UI element based on the drag input
+        Vector2 position;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            currentCanvas.transform as RectTransform, // Parent canvas
+            eventData.position, // Current mouse/touch position
+            currentCanvas.worldCamera, // Canvas camera (if using Screen Space - Camera)
+            out position // Output position in local space
+        );
+
+        // Set the position of the UI element
+        transform.position = currentCanvas.transform.TransformPoint(position);
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+
+        isOnSlot = true;
+
+        if (IsPointerOverUIElement(trashCan.GetComponent<RectTransform>()) && !currentSlot.isShop)
+        {
+            currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
+            PersistentData.playerMoney += cardSchema.price / 2;
+            Destroy(gameObject);
+        }
+
+        foreach (GameObject slot in slots) {
+            if (IsPointerOverUIElement(slot.GetComponent<RectTransform>())
+            && (cardSchema.cardType == slot.GetComponent<Slot>().cardType ||
+            cardSchema.cardType == CardSchema.CardType.ANY ||
+            slot.GetComponent<Slot>().cardType == CardSchema.CardType.ANY)
+            && (currentSlot.GetComponent<Slot>().isShop == false || currentSlot.GetComponent<Slot>().isShop == true && PersistentData.playerMoney >= cardSchema.price)){
+                if (currentSlot.GetComponent<Slot>().isShop && slot.GetComponent<Slot>().isShop == false) {
+                    PersistentData.playerMoney -= cardSchema.price;
+                }
+                currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
+                slot.GetComponent<Slot>().AddCardToSlot(gameObject.GetComponent<Card>());
+                currentSlot = slot.GetComponent<Slot>();
+            }
+        }
+
+        Debug.Log("Drag ended!");
+    }
+
+    private bool IsPointerOverUIElement(RectTransform rectTransform)
+    {
+        // Get the current mouse or touch position
+        Vector2 screenPosition = Input.mousePosition; // For mouse
+        if (Input.touchCount > 0)
+        {
+            screenPosition = Input.GetTouch(0).position; // For touch
+        }
+
+        // Check if the screen position is within the RectTransform
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPosition, null);
+    }
+}
