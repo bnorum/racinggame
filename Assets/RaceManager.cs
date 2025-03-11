@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine.UI;
 
 public class RaceManager : MonoBehaviour
 {
@@ -37,6 +39,8 @@ public class RaceManager : MonoBehaviour
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI accelerationText;
     public TextMeshProUGUI driverPowerText;
+
+    public Button nextRoundButton;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -76,14 +80,17 @@ public class RaceManager : MonoBehaviour
         player.carState = Car.CarState.ATSTART;
         player.distanceTraveled = 0f;
         SelectCameraAngle(0);
-        ShopCanvas.enabled = false;
-        RaceCanvas.enabled = true;
+
+        player.CalculatePlayerStats();
+
+        StartCoroutine(TransitionCanvas(ShopCanvas, false));
+        StartCoroutine(TransitionCanvas(RaceCanvas, true));
+        nextRoundButton.gameObject.SetActive(false);
     }
 
     public void StartRace() {
         CalibrateRaceTrack();
         SelectCameraAngle(1);
-        player.CalculatePlayerStats();
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
                 card.cardEffect.ApplyCardEffectAtStartOfRace();
@@ -101,10 +108,6 @@ public class RaceManager : MonoBehaviour
     public void EndRace(bool playerWon) {
         Debug.Log("RACE OVER! TIME: " + raceTimer.ToString("F2"));
         raceActive = false;
-        SelectCameraAngle(4);
-        player.transform.position = playerStart.position;
-        player.carState = Car.CarState.GARAGE;
-        player.distanceTraveled = 0f;
 
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
@@ -113,18 +116,30 @@ public class RaceManager : MonoBehaviour
 
         }
 
-        ShopCanvas.enabled = true;
-        RaceCanvas.enabled = false;
         if (playerWon) {
-            PersistentData.playerMoney += 5;
-            PersistentData.playerMoney += PersistentData.playerMoney / 5;
-            GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
-            PersistentData.round++;
+            nextRoundButton.gameObject.SetActive(true);
+            CreateEndOfRoundScreen();
         } else {
-            Debug.Log("Game Over...");
+            nextRoundButton.gameObject.SetActive(false);
+            GameOver();
         }
 
+
+    }
+
+    public void ReturnToGarage() {
+        StartCoroutine(TransitionCanvas(ShopCanvas, true));
+        StartCoroutine(TransitionCanvas(RaceCanvas, false));
+
         player.transform.position = playerStart.position;
+        player.carState = Car.CarState.GARAGE;
+        player.distanceTraveled = 0f;
+        SelectCameraAngle(4);
+        PersistentData.playerMoney += 5;
+        PersistentData.playerMoney += PersistentData.playerMoney / 5;
+        GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
+        PersistentData.round++;
+
     }
 
     public void SelectCameraAngle(int anglenum) {
@@ -144,6 +159,34 @@ public class RaceManager : MonoBehaviour
         finishLine.transform.position = road.transform.position + new Vector3(0, 0, raceDistance);
         cameraAngles[2].position = cameraAngles[0].position + new Vector3(0, 0, raceDistance/2);
         cameraAngles[3].position = cameraAngles[1].position + new Vector3(0, 15, raceDistance + 25f);
+
+    }
+
+    public void CreateEndOfRoundScreen() {
+
+    }
+
+    public void GameOver() {
+
+    }
+
+    System.Collections.IEnumerator TransitionCanvas(Canvas canvas, bool fadeIn) {
+        if (fadeIn) {
+            canvas.enabled = true;
+            canvas.GetComponent<CanvasGroup>().alpha = 0;
+
+            for (float i = 0; i <= 1; i += Time.deltaTime) {
+                canvas.GetComponent<CanvasGroup>().alpha = i;
+                yield return null;
+            }
+        }
+        else {
+            for (float i = 1; i >= 0; i -= Time.deltaTime) {
+                canvas.GetComponent<CanvasGroup>().alpha = i;
+                yield return null;
+            }
+            canvas.enabled = false;
+        }
 
     }
 

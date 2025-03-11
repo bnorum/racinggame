@@ -19,7 +19,7 @@ public class ShopPanelManager : MonoBehaviour
     public int maxSlots = 5;
     public GameObject slotPrefab;
     public List<GameObject> slots = new List<GameObject>();
-
+    public List<Card> CardsInShop = new List<Card>();
     public CardManager cardManager;
 
     public TextMeshProUGUI moneyText;
@@ -72,6 +72,7 @@ public class ShopPanelManager : MonoBehaviour
 
         for (int i = 0; i < slots.Count; i++) {
             if (slots[i].GetComponent<Slot>().item != null) {
+                CardsInShop.Remove(slots[i].GetComponent<Slot>().item.GetComponent<Card>());
                 slots[i].GetComponent<Slot>().RemoveCardFromSlot();
             }
         }
@@ -79,6 +80,7 @@ public class ShopPanelManager : MonoBehaviour
             GameObject card = cardManager.GenerateRandomCard();
             Debug.Log("Card generated: " + card.name);
             slots[i].GetComponent<Slot>().AddCardToSlot(card.GetComponent<Card>());
+            CardsInShop.Add(card.GetComponent<Card>());
             card.transform.localPosition = Vector3.zero;
         }
     }

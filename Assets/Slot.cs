@@ -12,11 +12,25 @@ public class Slot : MonoBehaviour
     public CardSchema.CardType cardType; // The type of card that can be placed in this slot
 
     public void Start() {
-        if (isShop) {
+
+        if (isShop && item != null) {
             slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
         } else {
             slotType.text = cardType.ToString();
         }
+
+    }
+
+    void Update()
+    {
+
+        if (isShop && item != null) {
+            slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
+        } else {
+            slotType.text = cardType.ToString();
+        }
+
+
     }
 
     public void AddCardToSlot(Card card) {
