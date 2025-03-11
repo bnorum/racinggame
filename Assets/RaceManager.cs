@@ -34,11 +34,15 @@ public class RaceManager : MonoBehaviour
     public float raceTimer = 0f;
     public bool raceActive = false;
 
+    public TextMeshProUGUI speedText;
+    public TextMeshProUGUI accelerationText;
+    public TextMeshProUGUI driverPowerText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cam = Camera.main;
-        SelectCameraAngle(0);
+        SelectCameraAngle(4);
+        player.transform.position = player.garagePosition.transform.position;
     }
 
     // Update is called once per frame
@@ -47,6 +51,9 @@ public class RaceManager : MonoBehaviour
         if (raceActive) {
             raceTimer += Time.deltaTime;
             playerStatsText.text = "Time: " + raceTimer.ToString("F2");
+            speedText.text = "Speed: " + player.maxSpeed.ToString("F2");
+            accelerationText.text = "Acceleration: " + player.acceleration.ToString("F2");
+            driverPowerText.text = "Driver Power: " + player.driverPower.ToString("F2");
         }
         if ((player.distanceTraveled >= raceDistance) && raceTimer <= 5 && raceActive) {
             EndRace(true);
@@ -64,6 +71,15 @@ public class RaceManager : MonoBehaviour
 
     }
 
+    public void HeadToStart() {
+        player.transform.position = playerStart.position;
+        player.carState = Car.CarState.ATSTART;
+        player.distanceTraveled = 0f;
+        SelectCameraAngle(0);
+        ShopCanvas.enabled = false;
+        RaceCanvas.enabled = true;
+    }
+
     public void StartRace() {
         CalibrateRaceTrack();
         SelectCameraAngle(1);
@@ -79,10 +95,7 @@ public class RaceManager : MonoBehaviour
 
         player.carState = Car.CarState.RACING;
         raceActive = true;
-
-
-        ShopCanvas.enabled = false;
-        RaceCanvas.enabled = true;
+        raceTimer = 0f;
     }
 
     public void EndRace(bool playerWon) {
@@ -104,7 +117,9 @@ public class RaceManager : MonoBehaviour
         RaceCanvas.enabled = false;
         if (playerWon) {
             PersistentData.playerMoney += 5;
+            PersistentData.playerMoney += PersistentData.playerMoney / 5;
             GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
+            PersistentData.round++;
         } else {
             Debug.Log("Game Over...");
         }
@@ -118,12 +133,12 @@ public class RaceManager : MonoBehaviour
         cam.gameObject.transform.rotation = cameraAngles[anglenum].rotation;
     }
 
-    List<int> raceDistances = new List<int> {50, 100, 200, 350, 550, 800, 1100, 1450, 1850};
+    List<int> raceDistances = new List<int> {50, 100, 150, 250, 300, 350, 450, 500, 550};
     public void CalibrateRaceTrack() {
         if (PersistentData.round <= 9) {
             raceDistance = raceDistances[PersistentData.round-1];
         } else {
-        raceDistance = PersistentData.round * 750f;
+        raceDistance = PersistentData.round * 100f;
         }
         road.transform.localScale = new Vector3(road.transform.localScale.x, road.transform.localScale.y, raceDistance + 20);
         finishLine.transform.position = road.transform.position + new Vector3(0, 0, raceDistance);

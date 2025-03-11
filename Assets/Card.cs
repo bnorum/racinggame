@@ -123,6 +123,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         if (IsPointerOverUIElement(trashCan.GetComponent<RectTransform>()) && !currentSlot.isShop)
         {
+            GetComponent<CardEffect>().OnSell();
             currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
             PersistentData.playerMoney += cardSchema.price / 2;
             Destroy(gameObject);

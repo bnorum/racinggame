@@ -22,4 +22,16 @@ public class CardEffect : MonoBehaviour
     public virtual void ApplyCardEffectAtStartOfRace() {
 
     }
+
+    public virtual void OnSell() {
+
+    }
+
+    public virtual void OnBuy() {
+
+    }
+
+    public virtual void ConstantlyActive() {
+        
+    }
 }

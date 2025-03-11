@@ -7,8 +7,11 @@ public class Car : MonoBehaviour
     public List<CardSchema> cards;
     public float currentSpeed;
     public float maxSpeed = 30f;
-    public float acceleration = 2f;
+    public float baseMaxSpeed = 30f;
+    public float acceleration = 5f;
+    public float baseAcceleration = 5f;
     public float driverPower = 1f;
+    public float baseDriverPower = 1f;
 
 
 
@@ -93,9 +96,9 @@ public class Car : MonoBehaviour
             }
         }
 
-        acceleration = 5 + flatAcceleration;
-        maxSpeed = 30 + flatSpeed;
-        driverPower = 1 + flatDriverPower;
+        acceleration = baseAcceleration + flatAcceleration;
+        maxSpeed = baseMaxSpeed + flatSpeed;
+        driverPower = baseDriverPower + flatDriverPower;
 
         acceleration *= multAcceleration;
         maxSpeed *= multSpeed;
