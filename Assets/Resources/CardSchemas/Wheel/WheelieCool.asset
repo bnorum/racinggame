@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BiggerEngine
+  m_Name: WheelieCool
   m_EditorClassIdentifier: 
-  cardID: 102
-  cardName: Bigger Engine
-  cardDescription: Speed +10
+  cardEffectName: WheelieCool
+  cardName: Wheelie Cool
+  cardDescription: If this is the only wheel, gain x2 speed and x2 acceleration
   cardImage: {fileID: 0}
-  price: 4
-  cardType: 1
-  cardQuantityModified: 0
-  cardQuantityType: 0
-  cardQuantityValue: 10
+  price: 8
+  cardType: 5
+  cardQuantityModified: 3
+  cardQuantityType: 1
+  cardBrand: 3
+  cardRarity: 3
+  cardQuantityValue: 0

@@ -33,6 +33,7 @@ public class RaceManager : MonoBehaviour
     public GameObject PostRacePanel;
     public GameObject HeadToStartButton;
     public GameObject StartRaceButton;
+    public GameObject TrashCan;
 
 
     public TextMeshProUGUI timeText;
@@ -129,6 +130,7 @@ public class RaceManager : MonoBehaviour
         ShopPanel.SetActive(false);
         PostRacePanel.SetActive(false);
         timeText.gameObject.SetActive(true);
+        TrashCan.SetActive(false);
     }
 
     public void StartRace() {
@@ -184,6 +186,7 @@ public class RaceManager : MonoBehaviour
         StartRaceButton.SetActive(false);
         HeadToStartButton.SetActive(true);
         timeText.gameObject.SetActive(false);
+        TrashCan.SetActive(true);
 
         player.transform.position = playerStart.position;
         GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();

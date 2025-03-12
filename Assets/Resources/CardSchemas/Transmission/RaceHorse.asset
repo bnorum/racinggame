@@ -21,4 +21,5 @@ MonoBehaviour:
   cardQuantityModified: 2
   cardQuantityType: 0
   cardBrand: 0
+  cardRarity: 3
   cardQuantityValue: 10

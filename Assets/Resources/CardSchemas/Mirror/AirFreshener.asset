@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BigEngine
+  m_Name: AirFreshener
   m_EditorClassIdentifier: 
-  cardEffectName: 
-  cardName: Big Engine
-  cardDescription: Speed *2
+  cardEffectName: AirFreshener
+  cardName: Air Freshener
+  cardDescription: For each empty spot, gain +3 speed, and +3 Acceleration.
   cardImage: {fileID: 0}
-  price: 5
-  cardType: 1
-  cardQuantityModified: 0
-  cardQuantityType: 1
-  cardBrand: 1
-  cardRarity: 0
-  cardQuantityValue: 2
+  price: 7
+  cardType: 3
+  cardQuantityModified: 1
+  cardQuantityType: 0
+  cardBrand: 3
+  cardRarity: 3
+  cardQuantityValue: 0

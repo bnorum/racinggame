@@ -6,6 +6,7 @@ public class Slot : MonoBehaviour
     public int slotNumber; // The number of the slot
     public bool isOccupied = false;
     public bool isShop = false;
+    public int lastPrice = 0;
     public GameObject item; // The item currently in the slot
     public TextMeshProUGUI slotType;
 
@@ -15,6 +16,8 @@ public class Slot : MonoBehaviour
 
         if (isShop && item != null) {
             slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
+        } else if (isShop) {
+            slotType.text = "$" + lastPrice.ToString();
         } else {
             slotType.text = cardType.ToString();
         }
@@ -26,6 +29,8 @@ public class Slot : MonoBehaviour
 
         if (isShop && item != null) {
             slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
+        } else if (isShop) {
+            slotType.text = "$" + lastPrice.ToString();
         } else {
             slotType.text = cardType.ToString();
         }
@@ -38,6 +43,7 @@ public class Slot : MonoBehaviour
             isOccupied = true;
             item = card.gameObject;
             card.isOnSlot = true;
+            lastPrice = card.cardSchema.price;
             if (isShop) {
                 slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
             } else {

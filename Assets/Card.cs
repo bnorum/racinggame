@@ -51,7 +51,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         currentSlot = transform.parent.GetComponent<Slot>();
 
         if (cardEffectName != "") cardEffect = gameObject.AddComponent(System.Type.GetType(cardEffectName)) as CardEffect;
-        cardImage.sprite = Resources.Load<Sprite>("CardImages/"+ TransformTypeString(cardSchema.cardType.ToString())+"/"+cardEffectName);
+        cardImage.sprite = Resources.Load<Sprite>("CardImages/"+ TransformTypeString(cardSchema.cardType.ToString())+"/"+cardSchema.name);
         isEnabled = true;
 
     }

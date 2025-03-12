@@ -1,5 +1,7 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class CardInfoPanel : MonoBehaviour
 {
@@ -17,10 +19,20 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI cardDescription;
     public TextMeshProUGUI cardType;
     public TextMeshProUGUI cardBrand;
+    public Image rarityImage;
 
     public Card selectedCard;
 
     public bool isActive = false;
+
+    public Dictionary<CardSchema.CardRarity, Color> rarityColors = new Dictionary<CardSchema.CardRarity, Color>
+    {
+        { CardSchema.CardRarity.COMMON, Color.white },
+        { CardSchema.CardRarity.UNCOMMON, Color.green },
+        { CardSchema.CardRarity.RARE, Color.blue },
+        { CardSchema.CardRarity.EPIC, new Color(0.5f, 0f, 0.5f) },
+        { CardSchema.CardRarity.LEGENDARY, new Color(1f, 0.64f, 0f) }
+    };
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,6 +55,7 @@ public class CardInfoPanel : MonoBehaviour
             cardDescription.text = card.cardSchema.cardDescription;
             cardType.text = card.cardSchema.cardType.ToString();
             cardBrand.text = card.cardSchema.cardBrand.ToString();
+            rarityImage.color = rarityColors[card.cardSchema.cardRarity];
         }
         else {
             cardName.text = "";

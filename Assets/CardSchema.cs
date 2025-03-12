@@ -15,7 +15,7 @@ public class CardSchema : ScriptableObject
     public enum CardType {ANY, ENGINE, TRANSMISSION, MIRROR, DASH, WHEEL}
     public CardType cardType;
 
-    public enum CardQuantityModified {SPEED, DRIVERPOWER, ACCELERATION}
+    public enum CardQuantityModified {SPEED, DRIVERPOWER, ACCELERATION, BOTH}
     public CardQuantityModified cardQuantityModified;
     public enum CardQuantityType {ADD, MULTIPLY}
     public CardQuantityType cardQuantityType;

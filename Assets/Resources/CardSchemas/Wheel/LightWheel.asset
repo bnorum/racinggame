@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: Sentimental Picture
+  m_Name: LightWheel
   m_EditorClassIdentifier: 
   cardEffectName: 
-  cardName: Sentimental Picture
-  cardDescription: Driver Power +0.2
+  cardName: Light Wheel
+  cardDescription: Speed +10
   cardImage: {fileID: 0}
-  price: 4
-  cardType: 4
-  cardQuantityModified: 1
+  price: 3
+  cardType: 5
+  cardQuantityModified: 0
   cardQuantityType: 0
-  cardBrand: 2
+  cardBrand: 0
   cardRarity: 0
-  cardQuantityValue: 0.2
+  cardQuantityValue: 10

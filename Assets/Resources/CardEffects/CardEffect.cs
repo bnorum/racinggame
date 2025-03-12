@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class CardEffect : MonoBehaviour
 {
+    public Car player;
     public Card Card;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public virtual void Start()
     {
         Card = GetComponent<Card>();
+        player = RaceManager.Instance.player;
     }
 
     // Update is called once per frame

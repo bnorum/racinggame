@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: 
   cardName: Dirty Transmission
-  cardDescription: Acceleration +2
+  cardDescription: Acceleration +5
   cardImage: {fileID: 0}
-  price: 4
+  price: 3
   cardType: 2
   cardQuantityModified: 2
   cardQuantityType: 0
   cardBrand: 2
   cardRarity: 0
-  cardQuantityValue: 2
+  cardQuantityValue: 5

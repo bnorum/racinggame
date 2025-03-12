@@ -16,10 +16,10 @@ MonoBehaviour:
   cardName: Load-Bearing Wheel
   cardDescription: For each speed-producing wheel, gain x1.5 acceleration
   cardImage: {fileID: 0}
-  price: 7
+  price: 8
   cardType: 5
   cardQuantityModified: 2
   cardQuantityType: 0
   cardBrand: 0
-  cardRarity: 2
+  cardRarity: 4
   cardQuantityValue: 0
