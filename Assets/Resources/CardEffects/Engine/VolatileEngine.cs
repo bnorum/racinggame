@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class VolatileEffect : CardEffect
+public class VolatileEngine : CardEffect
 {
     float chance = 0.33f;
 

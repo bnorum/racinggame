@@ -51,10 +51,12 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         currentSlot = transform.parent.GetComponent<Slot>();
 
         if (cardEffectName != "") cardEffect = gameObject.AddComponent(System.Type.GetType(cardEffectName)) as CardEffect;
-
+        cardImage.sprite = Resources.Load<Sprite>("CardImages/"+ TransformTypeString(cardSchema.cardType.ToString())+"/"+cardEffectName);
         isEnabled = true;
 
     }
+
+
 
     // Update is called once per frame
     void Update()
@@ -83,6 +85,18 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         isEnabledImage.gameObject.SetActive(!isEnabled);
     }
 
+    private bool IsPointerOverUIElement(RectTransform rectTransform)
+    {
+        // Get the current mouse or touch position
+        Vector2 screenPosition = Input.mousePosition; // For mouse
+        if (Input.touchCount > 0)
+        {
+            screenPosition = Input.GetTouch(0).position; // For touch
+        }
+
+        // Check if the screen position is within the RectTransform
+        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPosition, null);
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -152,18 +166,19 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         Debug.Log("Drag ended!");
     }
 
-    private bool IsPointerOverUIElement(RectTransform rectTransform)
+
+
+
+    public string TransformTypeString(string input)
     {
-        // Get the current mouse or touch position
-        Vector2 screenPosition = Input.mousePosition; // For mouse
-        if (Input.touchCount > 0)
+        if (string.IsNullOrEmpty(input))
         {
-            screenPosition = Input.GetTouch(0).position; // For touch
+            return input;
         }
 
-        // Check if the screen position is within the RectTransform
-        return RectTransformUtility.RectangleContainsScreenPoint(rectTransform, screenPosition, null);
+        string lowerCaseString = input.ToLower();
+        char lastChar = char.ToUpper(lowerCaseString[lowerCaseString.Length - 1]);
+        return lowerCaseString.Substring(0, lowerCaseString.Length - 1) + lastChar;
     }
-
 
 }

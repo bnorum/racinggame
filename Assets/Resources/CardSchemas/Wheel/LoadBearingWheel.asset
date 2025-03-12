@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: LightweightWheel
+  m_Name: LoadBearingWheel
   m_EditorClassIdentifier: 
-  cardEffectName: 
-  cardName: Light-Weight Wheel
-  cardDescription: Speed +5
+  cardEffectName: LoadBearingWheel
+  cardName: Load-Bearing Wheel
+  cardDescription: For each speed-producing wheel, gain x1.5 acceleration
   cardImage: {fileID: 0}
-  price: 3
+  price: 7
   cardType: 5
-  cardQuantityModified: 0
+  cardQuantityModified: 2
   cardQuantityType: 0
   cardBrand: 0
-  cardRarity: 0
-  cardQuantityValue: 5
+  cardRarity: 2
+  cardQuantityValue: 0

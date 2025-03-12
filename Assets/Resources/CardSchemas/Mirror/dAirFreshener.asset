@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: AirFreshener
   cardName: Air Freshener
-  cardDescription: For each empty spot, gain +3 speed, +3 Acceleration, and +0.2
-    Driver Power.
+  cardDescription: For each empty spot, gain +3 speed, and +3 Acceleration.
   cardImage: {fileID: 0}
   price: 7
   cardType: 3

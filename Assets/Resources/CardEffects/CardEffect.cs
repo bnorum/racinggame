@@ -19,7 +19,11 @@ public class CardEffect : MonoBehaviour
 
     }
 
-    public virtual void ApplyCardEffectAtStartOfRace() {
+    public virtual void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats() {
+
+    }
+
+    public virtual void ApplyCardEffectAtStartOfRaceAfterCalculatingStats() {
 
     }
 
@@ -32,6 +36,6 @@ public class CardEffect : MonoBehaviour
     }
 
     public virtual void ConstantlyActive() {
-        
+
     }
 }

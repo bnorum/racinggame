@@ -107,12 +107,28 @@ public class RaceManager : MonoBehaviour
         player.distanceTraveled = 0f;
         SelectCameraAngle(0);
 
+        //One day, these will have animations attached. Stay tuned.
+        player.ResetCar();
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtStartOfRaceBeforeCalculatingStats();
+            }
+        }
         player.CalculatePlayerStats();
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
+            }
+        }
+        player.ApplyDriverPower();
+
+
         RaceStatsPanel.SetActive(true);
         StartRaceButton.SetActive(true);
         HeadToStartButton.SetActive(false);
         ShopPanel.SetActive(false);
         PostRacePanel.SetActive(false);
+        timeText.gameObject.SetActive(true);
     }
 
     public void StartRace() {
@@ -121,11 +137,7 @@ public class RaceManager : MonoBehaviour
 
         CalibrateRaceTrack();
         SelectCameraAngle(1);
-        foreach(Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardEffect != null) {
-                card.cardEffect.ApplyCardEffectAtStartOfRace();
-            }
-        }
+
 
         player.carState = Car.CarState.RACING;
         raceActive = true;
@@ -171,6 +183,7 @@ public class RaceManager : MonoBehaviour
         PostRacePanel.SetActive(false);
         StartRaceButton.SetActive(false);
         HeadToStartButton.SetActive(true);
+        timeText.gameObject.SetActive(false);
 
         player.transform.position = playerStart.position;
         GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();

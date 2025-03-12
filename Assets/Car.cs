@@ -53,10 +53,15 @@ public class Car : MonoBehaviour
         }
     }
 
+    public void ResetCar() {
+        acceleration = baseAcceleration;
+        maxSpeed = baseMaxSpeed;
+        driverPower = baseDriverPower;
+    }
+
     public void CalculatePlayerStats() {
         distanceTraveled = 0f;
         currentSpeed = 0f;
-        driverPower = 1f;
         float flatSpeed = 0f;
         float flatAcceleration = 0f;
         float flatDriverPower = 0f;
@@ -96,45 +101,21 @@ public class Car : MonoBehaviour
             }
         }
 
-        acceleration = baseAcceleration + flatAcceleration;
-        maxSpeed = baseMaxSpeed + flatSpeed;
-        driverPower = baseDriverPower + flatDriverPower;
+        acceleration = acceleration + flatAcceleration;
+        maxSpeed = maxSpeed + flatSpeed;
+        driverPower = driverPower + flatDriverPower;
 
         acceleration *= multAcceleration;
         maxSpeed *= multSpeed;
         driverPower *= multDriverPower;
+    }
+
+    public void ApplyDriverPower() {
         acceleration = Mathf.Pow(acceleration, driverPower);
         maxSpeed = Mathf.Pow(maxSpeed, driverPower);
     }
 
-    public void CalculateEnemyStats() {
-        distanceTraveled = 0f;
-        currentSpeed = 0f;
-        float driverPower = 1f;
 
-        for (int i = 0; i < PersistentData.round; i++) {
-            int choice = Random.Range(0, 5);
-            switch (choice) {
-                case 0:
-                    acceleration += Random.Range(2f, 4f);
-                    break;
-                case 1:
-                    acceleration *= Random.Range(1.1f, 1.3f);
-                    break;
-                case 2:
-                    maxSpeed += Random.Range(2f, 5f);
-                    break;
-                case 3:
-                    maxSpeed *= Random.Range(1.1f, 1.3f);
-                    break;
-                case 4:
-                    driverPower += Random.Range(0.1f, 0.3f);
-                    break;
-            }
-        }
-        acceleration = Mathf.Pow(acceleration, driverPower);
-        maxSpeed = Mathf.Pow(maxSpeed, driverPower);
-    }
 
     public void GetCards() {
         cards = EquipPanelManager.Instance.GetCards();

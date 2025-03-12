@@ -7,11 +7,10 @@ public class AirFreshener : CardEffect
         base.Start();
         player = RaceManager.Instance.player;
     }
-    public override void ApplyCardEffectAtStartOfRace() {
+    public override void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats() {
         int numMissing = 8-EquipPanelManager.Instance.Cards.Count;
         player.acceleration += 3 * numMissing;
         player.maxSpeed += 3 * numMissing;
-        player.driverPower += 1.2f * numMissing;
     }
 
 
