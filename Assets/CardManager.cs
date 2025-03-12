@@ -19,7 +19,7 @@ public class CardManager : MonoBehaviour
 
     public GameObject cardPrefab;
     public List<CardSchema> cardSchemas = new List<CardSchema>();
-
+    public Canvas shopCanvas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,7 +34,7 @@ public class CardManager : MonoBehaviour
         
     }
 
-    public GameObject GenerateRandomCard() {
+    public GameObject GenerateRandomCard(Slot slot) {
        // Debug.Log(cardSchemas.Count);
         CardSchema cardSchema = cardSchemas[Random.Range(0, cardSchemas.Count)];
         bool isDupe = false;
@@ -52,9 +52,9 @@ public class CardManager : MonoBehaviour
         }
 
         if (isDupe) {
-            return GenerateRandomCard();
+            return GenerateRandomCard(slot);
         } else {
-            GameObject card = Instantiate(cardPrefab, transform);
+            GameObject card = Instantiate(cardPrefab, slot.gameObject.transform);
             card.GetComponent<Card>().cardSchema = cardSchema;
             return card;
         }

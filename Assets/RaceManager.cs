@@ -28,10 +28,14 @@ public class RaceManager : MonoBehaviour
 
     public float raceDistance = 100f;
 
-    public Canvas ShopCanvas;
-    public Canvas RaceCanvas;
+    public GameObject ShopPanel;
+    public GameObject RaceStatsPanel;
+    public GameObject PostRacePanel;
+    public GameObject HeadToStartButton;
+    public GameObject StartRaceButton;
 
-    public TextMeshProUGUI playerStatsText;
+
+    public TextMeshProUGUI timeText;
 
     public float raceTimer = 0f;
     public bool raceActive = false;
@@ -40,13 +44,15 @@ public class RaceManager : MonoBehaviour
     public TextMeshProUGUI accelerationText;
     public TextMeshProUGUI driverPowerText;
 
-    public Button nextRoundButton;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         cam = Camera.main;
         SelectCameraAngle(4);
+        ReturnToGarage();
         player.transform.position = player.garagePosition.transform.position;
+
+
     }
 
     // Update is called once per frame
@@ -54,7 +60,7 @@ public class RaceManager : MonoBehaviour
     {
         if (raceActive) {
             raceTimer += Time.deltaTime;
-            playerStatsText.text = "Time: " + raceTimer.ToString("F2");
+            timeText.text = "Time: " + raceTimer.ToString("F2");
             speedText.text = "Speed: " + player.maxSpeed.ToString("F2");
             accelerationText.text = "Acceleration: " + player.acceleration.ToString("F2");
             driverPowerText.text = "Driver Power: " + player.driverPower.ToString("F2");
@@ -72,73 +78,6 @@ public class RaceManager : MonoBehaviour
         if (player.distanceTraveled > raceDistance*0.75f) {
             SelectCameraAngle(3);
         }
-
-    }
-
-    public void HeadToStart() {
-        player.transform.position = playerStart.position;
-        player.carState = Car.CarState.ATSTART;
-        player.distanceTraveled = 0f;
-        SelectCameraAngle(0);
-
-        player.CalculatePlayerStats();
-
-        StartCoroutine(TransitionCanvas(ShopCanvas, false));
-        StartCoroutine(TransitionCanvas(RaceCanvas, true));
-        nextRoundButton.gameObject.SetActive(false);
-    }
-
-    public void StartRace() {
-        CalibrateRaceTrack();
-        SelectCameraAngle(1);
-        foreach(Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardEffect != null) {
-                card.cardEffect.ApplyCardEffectAtStartOfRace();
-            }
-
-        }
-        //playerStatsText.text = player.acceleration.ToString() + "^" + player.driverPower.ToString() + " " + player.maxSpeed.ToString() + "^" + player.driverPower.ToString();
-
-
-        player.carState = Car.CarState.RACING;
-        raceActive = true;
-        raceTimer = 0f;
-    }
-
-    public void EndRace(bool playerWon) {
-        Debug.Log("RACE OVER! TIME: " + raceTimer.ToString("F2"));
-        raceActive = false;
-
-        foreach(Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardEffect != null) {
-                card.cardEffect.ApplyCardEffectAtEndOfRace();
-            }
-
-        }
-
-        if (playerWon) {
-            nextRoundButton.gameObject.SetActive(true);
-            CreateEndOfRoundScreen();
-        } else {
-            nextRoundButton.gameObject.SetActive(false);
-            GameOver();
-        }
-
-
-    }
-
-    public void ReturnToGarage() {
-        StartCoroutine(TransitionCanvas(ShopCanvas, true));
-        StartCoroutine(TransitionCanvas(RaceCanvas, false));
-
-        player.transform.position = playerStart.position;
-        player.carState = Car.CarState.GARAGE;
-        player.distanceTraveled = 0f;
-        SelectCameraAngle(4);
-        PersistentData.playerMoney += 5;
-        PersistentData.playerMoney += PersistentData.playerMoney / 5;
-        GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
-        PersistentData.round++;
 
     }
 
@@ -162,33 +101,89 @@ public class RaceManager : MonoBehaviour
 
     }
 
-    public void CreateEndOfRoundScreen() {
+    public void HeadToStart() {
+        player.transform.position = playerStart.position;
+        player.carState = Car.CarState.ATSTART;
+        player.distanceTraveled = 0f;
+        SelectCameraAngle(0);
 
+        player.CalculatePlayerStats();
+        RaceStatsPanel.SetActive(true);
+        StartRaceButton.SetActive(true);
+        HeadToStartButton.SetActive(false);
+        ShopPanel.SetActive(false);
+        PostRacePanel.SetActive(false);
+    }
+
+    public void StartRace() {
+
+        StartRaceButton.SetActive(false);
+
+        CalibrateRaceTrack();
+        SelectCameraAngle(1);
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtStartOfRace();
+            }
+        }
+
+        player.carState = Car.CarState.RACING;
+        raceActive = true;
+        raceTimer = 0f;
+    }
+
+    public void EndRace(bool playerWon) {
+        Debug.Log("RACE OVER! TIME: " + raceTimer.ToString("F2"));
+        raceActive = false;
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtEndOfRace();
+            }
+
+        }
+        if (playerWon) {
+            CreateEndOfRoundScreen();
+        } else {
+            GameOver();
+        }
+    }
+
+    public void CreateEndOfRoundScreen() {
+        PostRacePanel.SetActive(true);
+        RaceStatsPanel.SetActive(false);
+        ShopPanel.SetActive(false);
+        StartRaceButton.SetActive(false);
+        HeadToStartButton.SetActive(false);
+
+
+        PersistentData.round++;
+
+        PersistentData.playerMoney += 5;
+        PersistentData.playerMoney += PersistentData.playerMoney / 5;
+        //show money made, etc. etc.
+
+    }
+
+    public void ReturnToGarage() {
+
+        RaceStatsPanel.SetActive(false);
+        ShopPanel.SetActive(true);
+        PostRacePanel.SetActive(false);
+        StartRaceButton.SetActive(false);
+        HeadToStartButton.SetActive(true);
+
+        player.transform.position = playerStart.position;
+        GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
+        player.carState = Car.CarState.GARAGE;
+        player.distanceTraveled = 0f;
+        SelectCameraAngle(4);
     }
 
     public void GameOver() {
 
     }
 
-    System.Collections.IEnumerator TransitionCanvas(Canvas canvas, bool fadeIn) {
-        if (fadeIn) {
-            canvas.enabled = true;
-            canvas.GetComponent<CanvasGroup>().alpha = 0;
 
-            for (float i = 0; i <= 1; i += Time.deltaTime) {
-                canvas.GetComponent<CanvasGroup>().alpha = i;
-                yield return null;
-            }
-        }
-        else {
-            for (float i = 1; i >= 0; i -= Time.deltaTime) {
-                canvas.GetComponent<CanvasGroup>().alpha = i;
-                yield return null;
-            }
-            canvas.enabled = false;
-        }
-
-    }
 
 
 

@@ -16,7 +16,7 @@ public class ShopPanelManager : MonoBehaviour
         }
     }
 
-    public int maxSlots = 5;
+    public int maxSlots = 3;
     public GameObject slotPrefab;
     public List<GameObject> slots = new List<GameObject>();
     public List<Card> CardsInShop = new List<Card>();
@@ -28,7 +28,6 @@ public class ShopPanelManager : MonoBehaviour
     void Start()
     {
         RefreshNumberOfSlots();
-        FillShop();
     }
 
     // Update is called once per frame
@@ -77,11 +76,9 @@ public class ShopPanelManager : MonoBehaviour
             }
         }
         for (int i = 0; i < maxSlots; i++) {
-            GameObject card = cardManager.GenerateRandomCard();
-            Debug.Log("Card generated: " + card.name);
+            GameObject card = cardManager.GenerateRandomCard(slots[i].GetComponent<Slot>());
             slots[i].GetComponent<Slot>().AddCardToSlot(card.GetComponent<Card>());
             CardsInShop.Add(card.GetComponent<Card>());
-            card.transform.localPosition = Vector3.zero;
         }
     }
 

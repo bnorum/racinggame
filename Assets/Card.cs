@@ -131,10 +131,15 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         foreach (GameObject slot in slots) {
             if (IsPointerOverUIElement(slot.GetComponent<RectTransform>())
-            && (cardSchema.cardType == slot.GetComponent<Slot>().cardType ||
-            cardSchema.cardType == CardSchema.CardType.ANY ||
-            slot.GetComponent<Slot>().cardType == CardSchema.CardType.ANY)
-            && (currentSlot.GetComponent<Slot>().isShop == false || currentSlot.GetComponent<Slot>().isShop == true && PersistentData.playerMoney >= cardSchema.price)){
+            && slot.GetComponent<Slot>().isOccupied == false
+            && slot.GetComponent<Slot>().isShop == false
+            && (cardSchema.cardType == slot.GetComponent<Slot>().cardType
+            || cardSchema.cardType == CardSchema.CardType.ANY
+            || slot.GetComponent<Slot>().cardType == CardSchema.CardType.ANY)
+            && (currentSlot.GetComponent<Slot>().isShop == false
+            || (currentSlot.GetComponent<Slot>().isShop == true
+            && PersistentData.playerMoney >= cardSchema.price))) {
+
                 if (currentSlot.GetComponent<Slot>().isShop && slot.GetComponent<Slot>().isShop == false) {
                     PersistentData.playerMoney -= cardSchema.price;
                 }
