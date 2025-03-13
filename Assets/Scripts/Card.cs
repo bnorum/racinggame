@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections;
 
 public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -179,6 +180,18 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         string lowerCaseString = input.ToLower();
         char lastChar = char.ToUpper(lowerCaseString[lowerCaseString.Length - 1]);
         return lowerCaseString.Substring(0, lowerCaseString.Length - 1) + lastChar;
+    }
+
+    public IEnumerator Shake() {
+        Vector3 originalRotation = transform.eulerAngles;
+        float elapsedTime = 0f;
+        while (elapsedTime < 0.2f) {
+            float zRotation = Random.Range(-5f, 5f);
+            transform.eulerAngles = new Vector3(originalRotation.x, originalRotation.y, originalRotation.z + zRotation);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.eulerAngles = originalRotation;
     }
 
 }

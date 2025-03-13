@@ -6,12 +6,8 @@ public class VolatileEngine : CardEffect
 
 
     public override void ApplyCardEffectAtEndOfRace() {
-        foreach (Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardSchema.cardEffectName == "FuzzyDice") {
-                chance += .20f;
-            }
-        }
-        if (Random.value < chance) {
+
+        if (Random.value < chance + PersistentData.chanceModifier) {
             Card.isEnabled = false;
             Debug.Log("Extinct!");
         } else {

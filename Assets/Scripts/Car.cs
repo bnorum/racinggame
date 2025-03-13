@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    public List<CardSchema> cards;
+    public List<Card> cards;
     public float currentSpeed;
     public float maxSpeed = 30f;
     public float baseMaxSpeed = 30f;
@@ -28,6 +29,7 @@ public class Car : MonoBehaviour
 
     public GameObject garagePosition;
     public GameObject startLinePosition;
+    public bool statsCalculated = true;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -59,55 +61,99 @@ public class Car : MonoBehaviour
         driverPower = baseDriverPower;
     }
 
-    public void CalculatePlayerStats() {
+    public System.Collections.IEnumerator CalculatePlayerStats() {
+        statsCalculated = false;
+
         distanceTraveled = 0f;
         currentSpeed = 0f;
-        float flatSpeed = 0f;
-        float flatAcceleration = 0f;
-        float flatDriverPower = 0f;
-        float multSpeed = 1f;
-        float multAcceleration = 1f;
-        float multDriverPower = 1f;
         if (isPlayer) GetCards();
-        foreach (CardSchema card in cards) {
+        foreach (Card card in cards) {
+            if (!card.isEnabled) continue;
             bool isMultiplier = false;
-            if (card.cardQuantityType == CardSchema.CardQuantityType.MULTIPLY) {
+            if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.MULTIPLY) {
                 isMultiplier = true;
-            } else if (card.cardQuantityType == CardSchema.CardQuantityType.ADD) {
+            } else if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.ADD) {
                 isMultiplier = false;
             }
-            switch (card.cardQuantityModified) {
+            switch (card.cardSchema.cardQuantityModified) {
                 case CardSchema.CardQuantityModified.ACCELERATION:
-                    if (isMultiplier) {
-                        multAcceleration *= card.cardQuantityValue;
-                    } else {
-                        flatAcceleration += card.cardQuantityValue;
+                    if (!isMultiplier) {
+                        acceleration += card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.accelerationText.gameObject, card);
                     }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
                     break;
                 case CardSchema.CardQuantityModified.DRIVERPOWER:
-                    if (isMultiplier && card.cardQuantityValue > 1) {
-                        multDriverPower *= card.cardQuantityValue;
-                    } else {
-                        flatDriverPower += card.cardQuantityValue;
+                    if (!isMultiplier) {
+                        driverPower += card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.driverPowerText.gameObject, card);
                     }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
                     break;
                 case CardSchema.CardQuantityModified.SPEED:
-                    if (isMultiplier) {
-                        multSpeed *= card.cardQuantityValue;
-                    } else {
-                        flatSpeed += card.cardQuantityValue;
+                    if (!isMultiplier) {
+                        maxSpeed += card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.speedText.gameObject, card);
                     }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
                     break;
             }
         }
 
-        acceleration = acceleration + flatAcceleration;
-        maxSpeed = maxSpeed + flatSpeed;
-        driverPower = driverPower + flatDriverPower;
+        foreach (Card card in cards) {
+            if (!card.isEnabled) continue;
+            bool isMultiplier = false;
+            if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.MULTIPLY) {
+                isMultiplier = true;
+            } else if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.ADD) {
+                isMultiplier = false;
+            }
+            switch (card.cardSchema.cardQuantityModified) {
+                case CardSchema.CardQuantityModified.ACCELERATION:
+                    if (isMultiplier) {
+                        acceleration *= card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.accelerationText.gameObject, card);
 
-        acceleration *= multAcceleration;
-        maxSpeed *= multSpeed;
-        driverPower *= multDriverPower;
+                    }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
+                    break;
+                case CardSchema.CardQuantityModified.SPEED:
+                    if (isMultiplier) {
+                        maxSpeed *= card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.speedText.gameObject, card);
+                    }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
+                    break;
+            }
+        }
+
+
+        foreach (Card card in cards) {
+            if (!card.isEnabled) continue;
+            bool isMultiplier = false;
+            if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.MULTIPLY) {
+                isMultiplier = true;
+            } else if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.ADD) {
+                isMultiplier = false;
+            }
+            switch (card.cardSchema.cardQuantityModified) {
+                case CardSchema.CardQuantityModified.DRIVERPOWER:
+                    if (isMultiplier && card.cardSchema.cardQuantityValue > 1) {
+                        driverPower *= card.cardSchema.cardQuantityValue;
+                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.driverPowerText.gameObject, card);
+                    }
+                    yield return new WaitForSeconds(PersistentData.calculationDelay);
+                    break;
+
+            }
+        }
+
+        if (driverPower != 1) {
+            RaceManager.Instance.CreateBonusText(Mathf.Pow(maxSpeed, driverPower) - maxSpeed, 1, RaceManager.Instance.speedText.gameObject);
+            RaceManager.Instance.CreateBonusText(Mathf.Pow(acceleration, driverPower) - acceleration, 1, RaceManager.Instance.accelerationText.gameObject);
+        }
+
+        statsCalculated = true;
     }
 
     public void ApplyDriverPower() {

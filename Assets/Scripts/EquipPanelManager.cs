@@ -29,7 +29,7 @@ public class EquipPanelManager : MonoBehaviour
 
 
 
-    public List<CardSchema> GetCards() {
+    public List<CardSchema> GetCardSchemas() {
         List<CardSchema> cards = new List<CardSchema>();
         if (EngineSlot.item != null) {
             cards.Add(EngineSlot.item.GetComponent<Card>().cardSchema);
@@ -49,5 +49,9 @@ public class EquipPanelManager : MonoBehaviour
             }
         }
         return cards;
+    }
+
+    public List<Card> GetCards() {
+        return Cards;
     }
 }

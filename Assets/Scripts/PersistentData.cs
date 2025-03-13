@@ -8,6 +8,8 @@ public static class PersistentData
     public static GameState gameState = GameState.MainMenu;
     public enum CarType {AMERICAN, MEXICAN, BRITISH, JAPANESE, GERMAN, PREHISTORIC};
     public static CarType playerCarType;
-    
+
+    public static float calculationDelay = 0.2f;
+    public static float chanceModifier = 0f;
 
 }

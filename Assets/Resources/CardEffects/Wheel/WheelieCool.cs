@@ -14,7 +14,9 @@ public class WheelieCool : CardEffect
 
         if (numOfWheels <= 1) {
             player.maxSpeed *= 2;
+            RaceManager.Instance.CreateBonusText(2, 2, RaceManager.Instance.speedText.gameObject, Card);
             player.acceleration *= 2;
+            RaceManager.Instance.CreateBonusText(2, 2, RaceManager.Instance.accelerationText.gameObject, Card);
         }
 
     }

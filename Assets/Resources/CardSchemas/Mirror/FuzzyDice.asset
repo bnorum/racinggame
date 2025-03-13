@@ -19,7 +19,7 @@ MonoBehaviour:
   price: 4
   cardType: 3
   cardQuantityModified: 1
-  cardQuantityType: 1
+  cardQuantityType: 0
   cardBrand: 0
   cardRarity: 1
   cardQuantityValue: 0.2

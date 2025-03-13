@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine.UI;
+using System.Collections;
 
 public class RaceManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class RaceManager : MonoBehaviour
     public Transform playerStart;
     public GameObject road;
     public GameObject finishLine;
+
+    public Canvas canvas;
 
     public Camera cam;
     public List<Transform> cameraAngles = new List<Transform>();
@@ -45,7 +48,9 @@ public class RaceManager : MonoBehaviour
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI accelerationText;
     public TextMeshProUGUI driverPowerText;
+    public Vector3 driverPowerOGPosition;
 
+    public GameObject BonusTextPrefab;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,6 +58,7 @@ public class RaceManager : MonoBehaviour
         SelectCameraAngle(4);
         ReturnToGarage();
         player.transform.position = player.garagePosition.transform.position;
+        driverPowerOGPosition = driverPowerText.transform.parent.position;
 
 
     }
@@ -62,11 +68,12 @@ public class RaceManager : MonoBehaviour
     {
         if (raceActive) {
             raceTimer += Time.deltaTime;
-            timeText.text = "Time: " + raceTimer.ToString("F2");
-            speedText.text = "Speed: " + player.maxSpeed.ToString("F2");
-            accelerationText.text = "Acceleration: " + player.acceleration.ToString("F2");
-            driverPowerText.text = "Driver Power: " + player.driverPower.ToString("F2");
         }
+        timeText.text = raceTimer.ToString("F2");
+        speedText.text = player.maxSpeed.ToString("F2");
+        accelerationText.text = player.acceleration.ToString("F2");
+        driverPowerText.text = player.driverPower.ToString("F2");
+
         if ((player.distanceTraveled >= raceDistance) && raceTimer <= 5 && raceActive) {
             EndRace(true);
         } else if ((player.distanceTraveled >= raceDistance) && raceTimer > 5 && raceActive) {
@@ -103,37 +110,64 @@ public class RaceManager : MonoBehaviour
 
     }
 
-    public void HeadToStart() {
+    public System.Collections.IEnumerator HeadToStartCoroutine() {
+
+        HeadToStartButton.SetActive(false);
+        ShopPanel.SetActive(false);
+        PostRacePanel.SetActive(false);
+        TrashCan.SetActive(false);
+        MoneyText.SetActive(false);
+        timeText.gameObject.SetActive(true);
+        RaceStatsPanel.SetActive(true);
+        driverPowerText.transform.parent.gameObject.SetActive(true);
+        driverPowerText.transform.parent.position = driverPowerOGPosition;
+        yield return new WaitForSeconds(0.5f);
+
+
         player.transform.position = playerStart.position;
         player.carState = Car.CarState.ATSTART;
         player.distanceTraveled = 0f;
         SelectCameraAngle(0);
 
         //One day, these will have animations attached. Stay tuned.
-        player.ResetCar();
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
                 card.cardEffect.ApplyCardEffectAtStartOfRaceBeforeCalculatingStats();
             }
+            yield return new WaitForSeconds(PersistentData.calculationDelay);
         }
-        player.CalculatePlayerStats();
+        StartCoroutine(player.CalculatePlayerStats());
+        while (!player.statsCalculated) {
+            yield return null;
+        }
+        player.statsCalculated = false;
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
                 card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
             }
         }
+
+        Transform driverPowerParent = driverPowerText.transform.parent;
+        Transform speedTextParent = speedText.transform.parent;
+        Vector3 targetPosition = new Vector3(driverPowerParent.position.x, speedTextParent.position.y, driverPowerParent.position.z);
+
+        while (Vector3.Distance(driverPowerParent.position, targetPosition) > 0.01f) {
+            driverPowerText.transform.parent.position = Vector3.MoveTowards(driverPowerText.transform.parent.position, targetPosition, Time.deltaTime * 2000f);
+            yield return null;
+        }
+        driverPowerText.transform.parent.gameObject.SetActive(false);
+
         player.ApplyDriverPower();
 
 
-        RaceStatsPanel.SetActive(true);
-        StartRaceButton.SetActive(true);
-        HeadToStartButton.SetActive(false);
-        ShopPanel.SetActive(false);
-        PostRacePanel.SetActive(false);
-        timeText.gameObject.SetActive(true);
-        TrashCan.SetActive(false);
-        MoneyText.SetActive(false);
 
+        StartRaceButton.SetActive(true);
+
+
+    }
+
+    public void HeadToStart() {
+        StartCoroutine(HeadToStartCoroutine());
     }
 
     public void StartRace() {
@@ -159,13 +193,13 @@ public class RaceManager : MonoBehaviour
 
         }
         if (playerWon) {
-            CreateEndOfRoundScreen();
+            StartCoroutine(CreateEndOfRoundScreen());
         } else {
             GameOver();
         }
     }
 
-    public void CreateEndOfRoundScreen() {
+    public System.Collections.IEnumerator CreateEndOfRoundScreen() {
         PostRacePanel.SetActive(true);
         RaceStatsPanel.SetActive(false);
         ShopPanel.SetActive(false);
@@ -175,8 +209,11 @@ public class RaceManager : MonoBehaviour
 
         PersistentData.round++;
 
-        PersistentData.playerMoney += 5;
-        PersistentData.playerMoney += PersistentData.playerMoney / 5;
+        for (int i = 0; i < 5; i++) {
+            PersistentData.playerMoney += 1;
+            yield return new WaitForSeconds(0.1f);
+        }
+        PersistentData.playerMoney += Mathf.Clamp(PersistentData.playerMoney, 0, 25)  / 5;
         //show money made, etc. etc.
 
     }
@@ -197,12 +234,43 @@ public class RaceManager : MonoBehaviour
         player.carState = Car.CarState.GARAGE;
         player.distanceTraveled = 0f;
         SelectCameraAngle(4);
+        player.ResetCar();
     }
 
     public void GameOver() {
 
     }
 
+
+    public void CreateBonusText(float quantity, int type, GameObject location, Card relatedCard = null) {
+        //1 = add, 2 = mult
+        GameObject bonusText = Instantiate(BonusTextPrefab, Vector3.zero, Quaternion.identity, location.transform);
+        bonusText.transform.localPosition = new Vector3(0, 0, 0) + new Vector3(0, 20, 0);
+        StartCoroutine(UIPulse(location.transform.parent.gameObject));
+        if (relatedCard != null) {
+            StartCoroutine(relatedCard.Shake());
+        }
+        //bonusText.transform.SetParent(canvas.transform, true);
+        bonusText.transform.SetAsLastSibling();
+        switch (type) {
+            case 1:
+                bonusText.GetComponent<TextMeshProUGUI>().text = "+" + quantity.ToString("F2");
+                break;
+            case 2:
+                bonusText.GetComponent<TextMeshProUGUI>().text = "x" + quantity.ToString("F2");
+                break;
+        }
+
+
+    }
+
+    public IEnumerator UIPulse(GameObject uiElement) {
+        uiElement.transform.localScale = uiElement.transform.localScale + new Vector3(0.2f, 0.2f, 0.2f);
+        while (uiElement.transform.localScale.x > 1f) {
+            uiElement.transform.localScale -= new Vector3(0.01f, 0.01f, 0.01f);
+            yield return null;
+        }
+    }
 
 
 
