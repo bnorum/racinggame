@@ -164,15 +164,7 @@ public class Car : MonoBehaviour
             ApplyDriverPower();
         }
 
-        if (isGerman) {
-            float avg = (maxSpeed + acceleration) / 2f;
-            maxSpeed = avg;
-            acceleration = avg;
-            RaceManager.Instance.CreateBonusText(0, 1, RaceManager.Instance.accelerationText.gameObject);
-            RaceManager.Instance.CreateBonusText(0, 1, RaceManager.Instance.speedText.gameObject);
-            RaceManager.Instance.accelerationText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
-            RaceManager.Instance.speedText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
-        }
+        
 
 
         statsCalculated = true;

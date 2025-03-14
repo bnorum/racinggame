@@ -133,6 +133,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         {
             if (GetComponent<CardEffect>() != null) GetComponent<CardEffect>().OnSell();
             currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
+            EquipPanelManager.Instance.Cards.Remove(gameObject.GetComponent<Card>());
             PersistentData.playerMoney += cardSchema.price / 2;
             Destroy(gameObject);
         }

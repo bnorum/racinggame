@@ -164,6 +164,16 @@ public class RaceManager : MonoBehaviour
             }
             yield return new WaitForSeconds(PersistentData.calculationDelay);
         }
+        if (PersistentData.playerCarType == PersistentData.CarType.GERMAN) {
+            float avg = (player.maxSpeed + player.acceleration) / 2f;
+            player.maxSpeed = avg;
+            player.acceleration = avg;
+            CreateBonusText(0, 1, accelerationText.gameObject);
+            CreateBonusText(0, 1, speedText.gameObject);
+            accelerationText.transform.parent.GetComponent<Image>().color = Color.yellow;
+            speedText.transform.parent.GetComponent<Image>().color = Color.yellow;
+        }
+        yield return new WaitForSeconds(PersistentData.calculationDelay);
 
 
 
