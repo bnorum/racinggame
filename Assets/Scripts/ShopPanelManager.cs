@@ -72,7 +72,9 @@ public class ShopPanelManager : MonoBehaviour
         for (int i = 0; i < slots.Count; i++) {
             if (slots[i].GetComponent<Slot>().item != null) {
                 CardsInShop.Remove(slots[i].GetComponent<Slot>().item.GetComponent<Card>());
+                Destroy(slots[i].GetComponent<Slot>().item);
                 slots[i].GetComponent<Slot>().RemoveCardFromSlot();
+
             }
         }
         for (int i = 0; i < maxSlots; i++) {

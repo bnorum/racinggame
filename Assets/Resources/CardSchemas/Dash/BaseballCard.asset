@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: BaseballCard
   cardName: Baseball Card
-  cardDescription: +0.4 Driver Power. When sold, permanently gain +0.2 Driver Power.
+  cardDescription: +0.3 Driver Power. When sold, permanently gain +0.1 Driver Power.
   cardImage: {fileID: 0}
   price: 5
   cardType: 4
@@ -22,4 +22,4 @@ MonoBehaviour:
   cardQuantityType: 0
   cardBrand: 3
   cardRarity: 1
-  cardQuantityValue: 0.4
+  cardQuantityValue: 0.3

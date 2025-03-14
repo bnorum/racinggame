@@ -101,13 +101,6 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        /*
-        foreach (GameObject slot in slots) {
-            if (IsPointerOverUIElement(slot.GetComponent<RectTransform>())) {
-                slot.GetComponent<Slot>().AddCardToSlot(gameObject.GetComponent<Card>());
-            }
-        }
-        */
         isOnSlot = false;
         cardInfoPanel.GetComponent<CardInfoPanel>().UpdateCardInfo(this);
         Debug.Log("Drag started!");
@@ -157,6 +150,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
                 if (currentSlot.GetComponent<Slot>().isShop && slot.GetComponent<Slot>().isShop == false) {
                     PersistentData.playerMoney -= cardSchema.price;
+                    ShopPanelManager.Instance.CardsInShop.Remove(gameObject.GetComponent<Card>());
                 }
                 currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
                 slot.GetComponent<Slot>().AddCardToSlot(gameObject.GetComponent<Card>());
@@ -191,7 +185,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        transform.eulerAngles = originalRotation;
+        transform.eulerAngles = Vector3.zero;
     }
 
 }

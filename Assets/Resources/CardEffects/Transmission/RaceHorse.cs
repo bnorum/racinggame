@@ -10,7 +10,7 @@ public class RaceHorse : CardEffect
             }
         }
         player.acceleration *= 2f;
-        RaceManager.Instance.CreateBonusText(2, 2, RaceManager.Instance.accelerationText.gameObject);
+        RaceManager.Instance.CreateBonusText(2, 2, RaceManager.Instance.accelerationText.gameObject, Card);
     }
 
 

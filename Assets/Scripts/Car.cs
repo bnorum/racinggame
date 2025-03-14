@@ -24,6 +24,7 @@ public class Car : MonoBehaviour
     public CarState carState = CarState.ATSTART;
 
     public bool isPlayer = false;
+    public bool isGerman = false;
 
     public float distanceTraveled = 0f;
 
@@ -62,6 +63,10 @@ public class Car : MonoBehaviour
     }
 
     public System.Collections.IEnumerator CalculatePlayerStats() {
+
+
+
+
         statsCalculated = false;
 
         distanceTraveled = 0f;
@@ -75,28 +80,30 @@ public class Car : MonoBehaviour
             } else if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.ADD) {
                 isMultiplier = false;
             }
-            switch (card.cardSchema.cardQuantityModified) {
-                case CardSchema.CardQuantityModified.ACCELERATION:
-                    if (!isMultiplier) {
+            if (!isMultiplier && card.cardSchema.cardQuantityValue != 0){
+                switch (card.cardSchema.cardQuantityModified) {
+                    case CardSchema.CardQuantityModified.ACCELERATION:
+
                         acceleration += card.cardSchema.cardQuantityValue;
                         RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.accelerationText.gameObject, card);
-                    }
-                    yield return new WaitForSeconds(PersistentData.calculationDelay);
-                    break;
-                case CardSchema.CardQuantityModified.DRIVERPOWER:
-                    if (!isMultiplier) {
+
+                        yield return new WaitForSeconds(PersistentData.calculationDelay);
+                        break;
+                    case CardSchema.CardQuantityModified.DRIVERPOWER:
+
                         driverPower += card.cardSchema.cardQuantityValue;
                         RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.driverPowerText.gameObject, card);
-                    }
-                    yield return new WaitForSeconds(PersistentData.calculationDelay);
-                    break;
-                case CardSchema.CardQuantityModified.SPEED:
-                    if (!isMultiplier) {
+
+                        yield return new WaitForSeconds(PersistentData.calculationDelay);
+                        break;
+                    case CardSchema.CardQuantityModified.SPEED:
+
                         maxSpeed += card.cardSchema.cardQuantityValue;
                         RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 1, RaceManager.Instance.speedText.gameObject, card);
-                    }
-                    yield return new WaitForSeconds(PersistentData.calculationDelay);
-                    break;
+
+                        yield return new WaitForSeconds(PersistentData.calculationDelay);
+                        break;
+                }
             }
         }
 
@@ -108,22 +115,25 @@ public class Car : MonoBehaviour
             } else if (card.cardSchema.cardQuantityType == CardSchema.CardQuantityType.ADD) {
                 isMultiplier = false;
             }
-            switch (card.cardSchema.cardQuantityModified) {
-                case CardSchema.CardQuantityModified.ACCELERATION:
-                    if (isMultiplier) {
-                        acceleration *= card.cardSchema.cardQuantityValue;
-                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.accelerationText.gameObject, card);
+            if (isMultiplier && card.cardSchema.cardQuantityValue != 1) {
+                switch (card.cardSchema.cardQuantityModified) {
+                    case CardSchema.CardQuantityModified.ACCELERATION:
+                        if (isMultiplier) {
+                            acceleration *= card.cardSchema.cardQuantityValue;
+                            RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.accelerationText.gameObject, card);
 
-                    }
-                    yield return new WaitForSeconds(PersistentData.calculationDelay);
-                    break;
-                case CardSchema.CardQuantityModified.SPEED:
-                    if (isMultiplier) {
-                        maxSpeed *= card.cardSchema.cardQuantityValue;
-                        RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.speedText.gameObject, card);
-                    }
-                    yield return new WaitForSeconds(PersistentData.calculationDelay);
-                    break;
+                        }
+                        yield return new WaitForSeconds(PersistentData.calculationDelay);
+                        break;
+                    case CardSchema.CardQuantityModified.SPEED:
+                        if (isMultiplier) {
+                            maxSpeed *= card.cardSchema.cardQuantityValue;
+                            RaceManager.Instance.CreateBonusText(card.cardSchema.cardQuantityValue, 2, RaceManager.Instance.speedText.gameObject, card);
+                        }
+                        yield return new WaitForSeconds(PersistentData.calculationDelay);
+                        break;
+                }
+
             }
         }
 
@@ -151,7 +161,19 @@ public class Car : MonoBehaviour
         if (driverPower != 1) {
             RaceManager.Instance.CreateBonusText(Mathf.Pow(maxSpeed, driverPower) - maxSpeed, 1, RaceManager.Instance.speedText.gameObject);
             RaceManager.Instance.CreateBonusText(Mathf.Pow(acceleration, driverPower) - acceleration, 1, RaceManager.Instance.accelerationText.gameObject);
+            ApplyDriverPower();
         }
+
+        if (isGerman) {
+            float avg = (maxSpeed + acceleration) / 2f;
+            maxSpeed = avg;
+            acceleration = avg;
+            RaceManager.Instance.CreateBonusText(0, 1, RaceManager.Instance.accelerationText.gameObject);
+            RaceManager.Instance.CreateBonusText(0, 1, RaceManager.Instance.speedText.gameObject);
+            RaceManager.Instance.accelerationText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
+            RaceManager.Instance.speedText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
+        }
+
 
         statsCalculated = true;
     }

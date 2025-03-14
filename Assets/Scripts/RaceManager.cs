@@ -38,6 +38,7 @@ public class RaceManager : MonoBehaviour
     public GameObject StartRaceButton;
     public GameObject TrashCan;
     public GameObject MoneyText;
+    public GameObject GameOverPanel;
 
 
     public TextMeshProUGUI timeText;
@@ -51,6 +52,7 @@ public class RaceManager : MonoBehaviour
     public Vector3 driverPowerOGPosition;
 
     public GameObject BonusTextPrefab;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -111,7 +113,7 @@ public class RaceManager : MonoBehaviour
     }
 
     public System.Collections.IEnumerator HeadToStartCoroutine() {
-
+        player.ResetCar();
         HeadToStartButton.SetActive(false);
         ShopPanel.SetActive(false);
         PostRacePanel.SetActive(false);
@@ -121,6 +123,9 @@ public class RaceManager : MonoBehaviour
         RaceStatsPanel.SetActive(true);
         driverPowerText.transform.parent.gameObject.SetActive(true);
         driverPowerText.transform.parent.position = driverPowerOGPosition;
+        accelerationText.transform.parent.GetComponent<Image>().color = Color.green;
+        speedText.transform.parent.GetComponent<Image>().color = Color.red;
+        AudioManager.Instance.ResetScoreCalcRev();
         yield return new WaitForSeconds(0.5f);
 
 
@@ -141,11 +146,6 @@ public class RaceManager : MonoBehaviour
             yield return null;
         }
         player.statsCalculated = false;
-        foreach(Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardEffect != null) {
-                card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
-            }
-        }
 
         Transform driverPowerParent = driverPowerText.transform.parent;
         Transform speedTextParent = speedText.transform.parent;
@@ -155,9 +155,19 @@ public class RaceManager : MonoBehaviour
             driverPowerText.transform.parent.position = Vector3.MoveTowards(driverPowerText.transform.parent.position, targetPosition, Time.deltaTime * 2000f);
             yield return null;
         }
+
         driverPowerText.transform.parent.gameObject.SetActive(false);
 
-        player.ApplyDriverPower();
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
+            }
+            yield return new WaitForSeconds(PersistentData.calculationDelay);
+        }
+
+
+
+
 
 
 
@@ -234,17 +244,17 @@ public class RaceManager : MonoBehaviour
         player.carState = Car.CarState.GARAGE;
         player.distanceTraveled = 0f;
         SelectCameraAngle(4);
-        player.ResetCar();
     }
 
     public void GameOver() {
-
+        GameOverPanel.SetActive(true);
     }
 
 
     public void CreateBonusText(float quantity, int type, GameObject location, Card relatedCard = null) {
         //1 = add, 2 = mult
         GameObject bonusText = Instantiate(BonusTextPrefab, Vector3.zero, Quaternion.identity, location.transform);
+        AudioManager.Instance.PlayScoreCalcRev();
         bonusText.transform.localPosition = new Vector3(0, 0, 0) + new Vector3(0, 20, 0);
         StartCoroutine(UIPulse(location.transform.parent.gameObject));
         if (relatedCard != null) {
