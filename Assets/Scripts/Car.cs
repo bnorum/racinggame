@@ -32,6 +32,8 @@ public class Car : MonoBehaviour
     public GameObject startLinePosition;
     public bool statsCalculated = true;
 
+    public float revInPlaceTimer = 0f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -47,8 +49,12 @@ public class Car : MonoBehaviour
             if (currentSpeed > maxSpeed) {
                 currentSpeed = maxSpeed;
             }
-            transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
-            distanceTraveled += currentSpeed * Time.deltaTime;
+            if (revInPlaceTimer < 0) {
+                transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+                distanceTraveled += currentSpeed * Time.deltaTime;
+
+            }
+            revInPlaceTimer -= Time.deltaTime;
         } else if (carState == CarState.GARAGE) {
             transform.position = Vector3.MoveTowards(transform.position, garagePosition.transform.position, currentSpeed * Time.deltaTime);
         } else if (carState == CarState.ATSTART) {
@@ -164,7 +170,7 @@ public class Car : MonoBehaviour
             ApplyDriverPower();
         }
 
-        
+
 
 
         statsCalculated = true;

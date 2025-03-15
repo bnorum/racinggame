@@ -1,10 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Slot : MonoBehaviour
 {
     public int slotNumber; // The number of the slot
     public bool isOccupied = false;
+    public bool isLocked = false; // Whether the slot is locked or not
     public bool isShop = false;
     public int lastPrice = 0;
     public GameObject item; // The item currently in the slot
@@ -12,28 +14,45 @@ public class Slot : MonoBehaviour
 
     public CardSchema.CardType cardType; // The type of card that can be placed in this slot
 
-    public void Start() {
+    public GameObject textHolder;
 
-        if (isShop && item != null) {
+    public void Start() {
+        if (isLocked) {
+            slotType.text = "LOCKED";
+            slotType.color = Color.red;
+        }
+        else if (isShop && item != null) {
             slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
+            slotType.color = Color.black;
         } else if (isShop) {
             slotType.text = "$" + lastPrice.ToString();
+            slotType.color = Color.black;
         } else {
             slotType.text = cardType.ToString();
+            slotType.color = Color.black;
         }
+
 
     }
 
     void Update()
     {
-
-        if (isShop && item != null) {
+        if (isLocked) {
+            slotType.text = "LOCKED";
+            slotType.color = Color.red;
+        }
+        else if (isShop && item != null) {
             slotType.text = "$" + item.GetComponent<Card>().cardSchema.price.ToString();
+            slotType.color = Color.black;
         } else if (isShop) {
             slotType.text = "$" + lastPrice.ToString();
+            slotType.color = Color.black;
         } else {
             slotType.text = cardType.ToString();
+            slotType.color = Color.black;
         }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(textHolder.GetComponent<RectTransform>());
 
 
     }

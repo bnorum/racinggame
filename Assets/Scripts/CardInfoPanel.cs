@@ -20,6 +20,7 @@ public class CardInfoPanel : MonoBehaviour
     public TextMeshProUGUI cardType;
     public TextMeshProUGUI cardBrand;
     public Image rarityImage;
+    public TextMeshProUGUI cardRarity;
 
     public Card selectedCard;
 
@@ -56,11 +57,21 @@ public class CardInfoPanel : MonoBehaviour
             cardType.text = card.cardSchema.cardType.ToString();
             cardBrand.text = card.cardSchema.cardBrand.ToString();
             rarityImage.color = rarityColors[card.cardSchema.cardRarity];
+            cardRarity.text = card.cardSchema.cardRarity.ToString();
         }
         else {
             cardName.text = "";
             cardDescription.text = "";
             cardType.text = "";
         }
+
+        StartCoroutine(FixLayout());
+    }
+
+    public System.Collections.IEnumerator FixLayout() {
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
+        yield return new WaitForEndOfFrame();
+        LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
     }
 }

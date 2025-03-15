@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: LoadBearingWheel
   cardName: Load-Bearing Wheel
-  cardDescription: For each speed-producing wheel, gain x1.5 acceleration
+  cardDescription: For each speed-producing wheel, gain x1.5 Acceleration
   cardImage: {fileID: 0}
-  price: 8
+  price: 10
   cardType: 5
   cardQuantityModified: 2
   cardQuantityType: 0

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: WeightlessWheel
+  m_Name: BicycleWheel
   m_EditorClassIdentifier: 
-  cardEffectName: 
-  cardName: Weightless Wheel
-  cardDescription: Speed *2
+  cardEffectName: BicycleWheel
+  cardName: Bicycle Wheel
+  cardDescription: If you have 2 wheels, gain x1.5 speed and x1.5 acceleration
   cardImage: {fileID: 0}
-  price: 7
+  price: 5
   cardType: 5
-  cardQuantityModified: 0
+  cardQuantityModified: 3
   cardQuantityType: 1
   cardBrand: 0
   cardRarity: 2
-  cardQuantityValue: 2
+  cardQuantityValue: 0

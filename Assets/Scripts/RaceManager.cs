@@ -61,7 +61,7 @@ public class RaceManager : MonoBehaviour
         ReturnToGarage();
         player.transform.position = player.garagePosition.transform.position;
         driverPowerOGPosition = driverPowerText.transform.parent.position;
-
+        PersistentData.round = 1;
 
     }
 
@@ -201,6 +201,11 @@ public class RaceManager : MonoBehaviour
         player.carState = Car.CarState.RACING;
         raceActive = true;
         raceTimer = 0f;
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectWhenRaceBegins();
+            }
+        }
     }
 
     public void EndRace(bool playerWon) {

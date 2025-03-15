@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: StickyWheel
   m_EditorClassIdentifier: 
-  cardEffectName: 
+  cardEffectName: StickyWheel
   cardName: Sticky Wheel
-  cardDescription: Acceleration +10
+  cardDescription: Acceleration +10. Accelerate in place for 0.5 seconds at the start
+    of the race.
   cardImage: {fileID: 0}
   price: 3
   cardType: 5

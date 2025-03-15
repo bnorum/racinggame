@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public CanvasScaler canvasScaler;
 
     void Awake()
     {
@@ -13,27 +16,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public RaceManager raceManager;
-    public ShopPanelManager shopPanelManager;
-    public EquipPanelManager equipPanelManager;
-    public CardManager cardManager;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        raceManager = RaceManager.Instance;
-        shopPanelManager = ShopPanelManager.Instance;
-        equipPanelManager = EquipPanelManager.Instance;
-        cardManager = CardManager.Instance;
-
-        PersistentData.round = 1;
-        PersistentData.playerMoney = 7;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        DecideResolution();
+    }
+    public void DecideResolution() {
+        if (Screen.width > Screen.height) {
+            //landscape
+            canvasScaler.matchWidthOrHeight = 0f;
+        } else {
+            //portrait
+            canvasScaler.matchWidthOrHeight = 1f;
+        }
     }
 
 

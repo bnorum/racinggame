@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: VolatileEngine
   cardName: VolatileEngine
-  cardDescription: Speed +25, 1/3 chance of exploding after race
+  cardDescription: Speed +35, 1/3 chance of exploding after race
   cardImage: {fileID: 21300000, guid: 58293dadf217be14688449aa96ed0405, type: 3}
   price: 4
   cardType: 1
   cardQuantityModified: 0
   cardQuantityType: 0
   cardBrand: 3
-  cardRarity: 1
-  cardQuantityValue: 25
+  cardRarity: 0
+  cardQuantityValue: 35

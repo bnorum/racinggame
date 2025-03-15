@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: CleanTransmission
   m_EditorClassIdentifier: 
-  cardEffectName: 
+  cardEffectName: CleanTransmission
   cardName: Clean Transmission
-  cardDescription: Acceleration *2
+  cardDescription: Acceleration x1.5.  Rare, Epic, and Legendary cards give +5 Acceleration.
   cardImage: {fileID: 0}
   price: 8
   cardType: 2
@@ -22,4 +22,4 @@ MonoBehaviour:
   cardQuantityType: 1
   cardBrand: 1
   cardRarity: 3
-  cardQuantityValue: 2
+  cardQuantityValue: 1.5

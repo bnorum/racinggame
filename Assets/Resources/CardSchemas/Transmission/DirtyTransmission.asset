@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: DirtyTransmission
   m_EditorClassIdentifier: 
-  cardEffectName: 
+  cardEffectName: DirtyTransmission
   cardName: Dirty Transmission
-  cardDescription: Acceleration +5
+  cardDescription: Acceleration +5. Common and Uncommon cards give x1.2 Acceleration.
   cardImage: {fileID: 0}
   price: 3
   cardType: 2
   cardQuantityModified: 2
   cardQuantityType: 0
   cardBrand: 2
-  cardRarity: 0
+  cardRarity: 1
   cardQuantityValue: 5

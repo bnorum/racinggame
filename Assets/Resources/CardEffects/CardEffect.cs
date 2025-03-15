@@ -40,4 +40,8 @@ public class CardEffect : MonoBehaviour
     public virtual void ConstantlyActive() {
 
     }
+
+    public virtual void ApplyCardEffectWhenRaceBegins() {
+
+    }
 }

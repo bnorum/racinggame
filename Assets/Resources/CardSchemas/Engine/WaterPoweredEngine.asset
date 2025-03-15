@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: WaterPoweredEngine
   m_EditorClassIdentifier: 
-  cardEffectName: 
+  cardEffectName: WaterPoweredEngine
   cardName: Water-Powered Engine
-  cardDescription: Speed +5
+  cardDescription: Speed +5. If you have atleast one other part,  Speed x1.25
   cardImage: {fileID: 0}
-  price: 2
+  price: 1
   cardType: 1
   cardQuantityModified: 0
   cardQuantityType: 0

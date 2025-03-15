@@ -103,6 +103,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         isOnSlot = false;
         cardInfoPanel.GetComponent<CardInfoPanel>().UpdateCardInfo(this);
+
         Debug.Log("Drag started!");
     }
 
@@ -129,8 +130,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
         isOnSlot = true;
 
-        if (IsPointerOverUIElement(trashCan.GetComponent<RectTransform>()) && !currentSlot.isShop)
-        {
+        if (IsPointerOverUIElement(trashCan.GetComponent<RectTransform>()) && !currentSlot.isShop && !currentSlot.isLocked) {
             if (GetComponent<CardEffect>() != null) GetComponent<CardEffect>().OnSell();
             currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
             EquipPanelManager.Instance.Cards.Remove(gameObject.GetComponent<Card>());
@@ -141,7 +141,8 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         foreach (GameObject slot in slots) {
             if (IsPointerOverUIElement(slot.GetComponent<RectTransform>())
             && slot.GetComponent<Slot>().isOccupied == false
-            && slot.GetComponent<Slot>().isShop == false
+            && slot.GetComponent<Slot>().isLocked == false
+            && currentSlot.GetComponent<Slot>().isLocked == false
             && (cardSchema.cardType == slot.GetComponent<Slot>().cardType
             || cardSchema.cardType == CardSchema.CardType.ANY
             || slot.GetComponent<Slot>().cardType == CardSchema.CardType.ANY)
@@ -152,6 +153,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
                 if (currentSlot.GetComponent<Slot>().isShop && slot.GetComponent<Slot>().isShop == false) {
                     PersistentData.playerMoney -= cardSchema.price;
                     ShopPanelManager.Instance.CardsInShop.Remove(gameObject.GetComponent<Card>());
+                    if (GetComponent<CardEffect>() != null) GetComponent<CardEffect>().OnBuy();
                 }
                 currentSlot.GetComponent<Slot>().RemoveCardFromSlot();
                 slot.GetComponent<Slot>().AddCardToSlot(gameObject.GetComponent<Card>());

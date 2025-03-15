@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: LargerEngine
+  m_Name: OverlyDesignedEngine
   m_EditorClassIdentifier: 
-  cardEffectName: 
-  cardName: Larger Engine
-  cardDescription: Speed *2
+  cardEffectName: OverlyDesignedEngine
+  cardName: Overly Designed Engine
+  cardDescription: '+5 Speed. For each owned, gain the corresponding stat: Transmission,
+    +5 Acceleration, Dash, +0.1 DP, Mirror, +0.1 DP, Wheel +1 Speed and +1 Acceleration'
   cardImage: {fileID: 0}
   price: 7
   cardType: 1
   cardQuantityModified: 0
-  cardQuantityType: 1
+  cardQuantityType: 0
   cardBrand: 1
-  cardRarity: 2
-  cardQuantityValue: 2
+  cardRarity: 1
+  cardQuantityValue: 5

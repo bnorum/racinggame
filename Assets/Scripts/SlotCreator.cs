@@ -28,6 +28,7 @@ public class SlotCreator : MonoBehaviour
             case PersistentData.CarType.JAPANESE:
                 CreateRegularSlots();
                 GameObject extraEngineSlot = Instantiate(slotPrefab, topSlotHolder.transform);
+
                 extraEngineSlot.GetComponent<Slot>().cardType = CardSchema.CardType.ENGINE;
                 extraEngineSlot.transform.SetSiblingIndex(2);
                 topSlotHolder.GetComponent<HorizontalLayoutGroup>().spacing = -30f;
@@ -59,12 +60,16 @@ public class SlotCreator : MonoBehaviour
 
         GameObject transSlot = Instantiate(slotPrefab, topSlotHolder.transform);
         transSlot.GetComponent<Slot>().cardType = CardSchema.CardType.TRANSMISSION;
+        EquipPanelManager.Instance.TransmissionSlot = transSlot.GetComponent<Slot>();
         GameObject engineSlot = Instantiate(slotPrefab, topSlotHolder.transform);
         engineSlot.GetComponent<Slot>().cardType = CardSchema.CardType.ENGINE;
+        EquipPanelManager.Instance.EngineSlot = engineSlot.GetComponent<Slot>();
         GameObject dashSlot = Instantiate(slotPrefab, topSlotHolder.transform);
         dashSlot.GetComponent<Slot>().cardType = CardSchema.CardType.DASH;
+        EquipPanelManager.Instance.DashSlot = dashSlot.GetComponent<Slot>();
         GameObject mirrorSlot = Instantiate(slotPrefab, topSlotHolder.transform);
         mirrorSlot.GetComponent<Slot>().cardType = CardSchema.CardType.MIRROR;
+        EquipPanelManager.Instance.MirrorSlot = mirrorSlot.GetComponent<Slot>();
 
     }
 }
