@@ -3,9 +3,10 @@ using UnityEngine;
 public class BicycleWheel : CardEffect
 {
 
-    int numOfWheels = 0;
+
     public override void ApplyCardEffectAtStartOfRaceAfterCalculatingStats()
     {
+        int numOfWheels = 0;
         foreach (Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardSchema.cardType == CardSchema.CardType.WHEEL) {
                 numOfWheels++;

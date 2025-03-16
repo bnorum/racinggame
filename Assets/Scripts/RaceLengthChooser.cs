@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RaceLengthChooser : MonoBehaviour
 {
@@ -19,6 +20,12 @@ public class RaceLengthChooser : MonoBehaviour
     public List<TextMeshProUGUI> race1Texts = new List<TextMeshProUGUI>();
     public List<TextMeshProUGUI> race2Texts = new List<TextMeshProUGUI>();
     public List<TextMeshProUGUI> race3Texts = new List<TextMeshProUGUI>();
+    public Image race1Image;
+    public Image race2Image;
+    public Image race3Image;
+
+    public List<string> locations;
+    public List<Sprite> locationImages = new List<Sprite>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -40,16 +47,22 @@ public class RaceLengthChooser : MonoBehaviour
         PersistentData.raceTime = time;
     }
 
-    public List<string> locations = new List<string> {"Boston", "Shibuya", "Hyderabad", "Mexico City", "London", "Cairo", "Berlin"};
+
     public void SetUpRaces() {
-        race1Texts[0].text = locations[Random.Range(0, locations.Count)];
+        int race1choice = Random.Range(0, locations.Count);
+        race1Texts[0].text = locations[race1choice];
+        race1Image.sprite = locationImages[race1choice];
         race2Texts[0].text = race1Texts[0].text;
         while (race2Texts[0].text == race1Texts[0].text) {
-            race2Texts[0].text = locations[Random.Range(0, locations.Count)];
+            int race2choice = Random.Range(0, locations.Count);
+            race2Texts[0].text = locations[race2choice];
+            race2Image.sprite = locationImages[race2choice];
         }
         race3Texts[0].text = race1Texts[0].text;
-        while (race3Texts[0].text == race1Texts[0].text && race3Texts[0].text == race2Texts[0].text) {
-            race3Texts[0].text = locations[Random.Range(0, locations.Count)];
+        while (race3Texts[0].text == race1Texts[0].text || race3Texts[0].text == race2Texts[0].text) {
+            int race3choice = Random.Range(0, locations.Count);
+            race3Texts[0].text = locations[race3choice];
+            race3Image.sprite = locationImages[race3choice];
         }
 
         race1Texts[1].text = PersistentData.round * 100 + "m";

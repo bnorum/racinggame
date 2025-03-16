@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BicycleWheel
+  m_Name: TricycleWheel
   m_EditorClassIdentifier: 
-  cardEffectName: BicycleWheel
-  cardName: Double Trouble
-  cardDescription: If you have 2 wheels, gain x1.5 speed and x1.5 acceleration
+  cardEffectName: TricycleWheel
+  cardName: Triple Threat
+  cardDescription: If you have 3 wheels, gain x1.25 speed and x1.25 acceleration
   cardImage: {fileID: 0}
   price: 5
   cardType: 5
   cardQuantityModified: 3
   cardQuantityType: 1
   cardBrand: 0
-  cardRarity: 2
+  cardRarity: 1
   cardQuantityValue: 0

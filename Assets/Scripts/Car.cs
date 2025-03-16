@@ -164,11 +164,7 @@ public class Car : MonoBehaviour
             }
         }
 
-        if (driverPower != 1) {
-            RaceManager.Instance.CreateBonusText(Mathf.Pow(maxSpeed, driverPower) - maxSpeed, 1, RaceManager.Instance.speedText.gameObject);
-            RaceManager.Instance.CreateBonusText(Mathf.Pow(acceleration, driverPower) - acceleration, 1, RaceManager.Instance.accelerationText.gameObject);
-            ApplyDriverPower();
-        }
+        
 
 
 

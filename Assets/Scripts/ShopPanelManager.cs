@@ -36,6 +36,13 @@ public class ShopPanelManager : MonoBehaviour
     {
         RefreshNumberOfSlots();
         moneyText.text = "$" + PersistentData.playerMoney.ToString();
+
+
+        if (Application.isEditor) {
+            if (Input.GetKeyDown(KeyCode.P)) {
+                PersistentData.playerMoney += 1000;
+            }
+        }
     }
 
     void RefreshNumberOfSlots() {
@@ -82,6 +89,14 @@ public class ShopPanelManager : MonoBehaviour
             GameObject card = cardManager.GenerateRandomCard(slots[i].GetComponent<Slot>());
             slots[i].GetComponent<Slot>().AddCardToSlot(card.GetComponent<Card>());
             CardsInShop.Add(card.GetComponent<Card>());
+        }
+    }
+
+    public void RerollShop() {
+
+        if (PersistentData.playerMoney >= 5) {
+            PersistentData.playerMoney -= 5;
+            FillShop();
         }
     }
 

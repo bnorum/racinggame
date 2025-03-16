@@ -39,6 +39,7 @@ public class RaceManager : MonoBehaviour
     public GameObject MoneyText;
     public GameObject GameOverPanel;
     public GameObject LengthChooser;
+    public GameObject RerollButton;
 
 
     public TextMeshProUGUI timeText;
@@ -62,6 +63,7 @@ public class RaceManager : MonoBehaviour
         player.transform.position = player.garagePosition.transform.position;
         driverPowerOGPosition = driverPowerText.transform.parent.position;
         PersistentData.round = 1;
+        PersistentData.raceLength = 999999;
 
     }
 
@@ -124,6 +126,7 @@ public class RaceManager : MonoBehaviour
         MoneyText.SetActive(false);
         timeText.gameObject.SetActive(true);
         RaceStatsPanel.SetActive(true);
+        RerollButton.SetActive(false);
         driverPowerText.transform.parent.gameObject.SetActive(true);
         driverPowerText.transform.parent.position = driverPowerOGPosition;
         accelerationText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.green;
@@ -145,10 +148,20 @@ public class RaceManager : MonoBehaviour
             yield return new WaitForSeconds(PersistentData.calculationDelay);
         }
         StartCoroutine(player.CalculatePlayerStats());
+
         while (!player.statsCalculated) {
             yield return null;
         }
         player.statsCalculated = false;
+
+
+
+        foreach(Card card in EquipPanelManager.Instance.Cards) {
+            if (card.cardEffect != null) {
+                card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
+            }
+            yield return new WaitForSeconds(PersistentData.calculationDelay);
+        }
 
         Transform driverPowerParent = driverPowerText.transform.parent;
         Transform speedTextParent = speedText.transform.parent;
@@ -159,14 +172,16 @@ public class RaceManager : MonoBehaviour
             yield return null;
         }
 
+
+
+        if (player.driverPower != 1) {
+            RaceManager.Instance.CreateBonusText(Mathf.Pow(player.maxSpeed, player.driverPower) - player.maxSpeed, 1, speedText.gameObject);
+            RaceManager.Instance.CreateBonusText(Mathf.Pow(player.acceleration, player.driverPower) - player.acceleration, 1, accelerationText.gameObject);
+            player.ApplyDriverPower();
+        }
+
         driverPowerText.transform.parent.gameObject.SetActive(false);
 
-        foreach(Card card in EquipPanelManager.Instance.Cards) {
-            if (card.cardEffect != null) {
-                card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();
-            }
-            yield return new WaitForSeconds(PersistentData.calculationDelay);
-        }
         if (PersistentData.playerCarType == PersistentData.CarType.GERMAN) {
             float avg = (player.maxSpeed + player.acceleration) / 2f;
             player.maxSpeed = avg;
@@ -262,6 +277,7 @@ public class RaceManager : MonoBehaviour
         timeText.gameObject.SetActive(false);
         TrashCan.SetActive(true);
         MoneyText.SetActive(true);
+        RerollButton.SetActive(true);
 
         player.transform.position = playerStart.position;
         GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
