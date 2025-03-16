@@ -4,6 +4,7 @@ using TMPro;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public class RaceManager : MonoBehaviour
 {
@@ -29,8 +30,6 @@ public class RaceManager : MonoBehaviour
     public Camera cam;
     public List<Transform> cameraAngles = new List<Transform>();
 
-    public float raceDistance = 100f;
-
     public GameObject ShopPanel;
     public GameObject RaceStatsPanel;
     public GameObject PostRacePanel;
@@ -39,6 +38,7 @@ public class RaceManager : MonoBehaviour
     public GameObject TrashCan;
     public GameObject MoneyText;
     public GameObject GameOverPanel;
+    public GameObject LengthChooser;
 
 
     public TextMeshProUGUI timeText;
@@ -76,17 +76,17 @@ public class RaceManager : MonoBehaviour
         accelerationText.text = player.acceleration.ToString("F2");
         driverPowerText.text = player.driverPower.ToString("F2");
 
-        if ((player.distanceTraveled >= raceDistance) && raceTimer <= 5 && raceActive) {
+        if ((player.distanceTraveled >= PersistentData.raceLength) && raceTimer <= PersistentData.raceTime && raceActive) {
             EndRace(true);
-        } else if ((player.distanceTraveled >= raceDistance) && raceTimer > 5 && raceActive) {
+        } else if ((player.distanceTraveled >= PersistentData.raceLength) && raceTimer > PersistentData.raceTime && raceActive) {
             EndRace(false);
         }
 
-        if (player.distanceTraveled > raceDistance/2 - 20) {
+        if (player.distanceTraveled > PersistentData.raceLength/2 - 20) {
             SelectCameraAngle(2);
         }
 
-        if (player.distanceTraveled > raceDistance*0.75f) {
+        if (player.distanceTraveled > PersistentData.raceLength*0.75f) {
             SelectCameraAngle(3);
         }
 
@@ -98,21 +98,24 @@ public class RaceManager : MonoBehaviour
         cam.gameObject.transform.rotation = cameraAngles[anglenum].rotation;
     }
 
-    List<int> raceDistances = new List<int> {50, 100, 150, 250, 300, 350, 450, 500, 550};
     public void CalibrateRaceTrack() {
-        if (PersistentData.round <= 9) {
-            raceDistance = raceDistances[PersistentData.round-1];
-        } else {
-        raceDistance = PersistentData.round * 100f;
-        }
-        road.transform.localScale = new Vector3(road.transform.localScale.x, road.transform.localScale.y, raceDistance + 20);
-        finishLine.transform.position = road.transform.position + new Vector3(0, 0, raceDistance);
-        cameraAngles[2].position = cameraAngles[0].position + new Vector3(0, 0, raceDistance/2);
-        cameraAngles[3].position = cameraAngles[1].position + new Vector3(0, 15, raceDistance + 25f);
+
+        road.transform.localScale = new Vector3(road.transform.localScale.x, road.transform.localScale.y, PersistentData.raceLength + 20);
+        finishLine.transform.position = road.transform.position + new Vector3(0, 0, PersistentData.raceLength);
+        cameraAngles[2].position = cameraAngles[0].position + new Vector3(0, 0, PersistentData.raceLength/2);
+        cameraAngles[3].position = cameraAngles[1].position + new Vector3(0, 15, PersistentData.raceLength + 25f);
 
     }
 
+    public void OpenLengthChooser() {
+        LengthChooser.SetActive(true);
+        LengthChooser.GetComponent<RaceLengthChooser>().SetUpRaces();
+    }
+
+
     public System.Collections.IEnumerator HeadToStartCoroutine() {
+        yield return new WaitForSeconds(0.5f);
+        LengthChooser.SetActive(false);
         player.ResetCar();
         HeadToStartButton.SetActive(false);
         ShopPanel.SetActive(false);
@@ -123,8 +126,8 @@ public class RaceManager : MonoBehaviour
         RaceStatsPanel.SetActive(true);
         driverPowerText.transform.parent.gameObject.SetActive(true);
         driverPowerText.transform.parent.position = driverPowerOGPosition;
-        accelerationText.transform.parent.GetComponent<Image>().color = Color.green;
-        speedText.transform.parent.GetComponent<Image>().color = Color.red;
+        accelerationText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.green;
+        speedText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.red;
         AudioManager.Instance.ResetScoreCalcRev();
         yield return new WaitForSeconds(0.5f);
 
@@ -170,8 +173,8 @@ public class RaceManager : MonoBehaviour
             player.acceleration = avg;
             CreateBonusText(0, 1, accelerationText.gameObject);
             CreateBonusText(0, 1, speedText.gameObject);
-            accelerationText.transform.parent.GetComponent<Image>().color = Color.yellow;
-            speedText.transform.parent.GetComponent<Image>().color = Color.yellow;
+            accelerationText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
+            speedText.transform.parent.GetComponent<UnityEngine.UI.Image>().color = Color.yellow;
         }
         yield return new WaitForSeconds(PersistentData.calculationDelay);
 
@@ -189,6 +192,9 @@ public class RaceManager : MonoBehaviour
     public void HeadToStart() {
         StartCoroutine(HeadToStartCoroutine());
     }
+
+
+
 
     public void StartRace() {
 
@@ -234,11 +240,14 @@ public class RaceManager : MonoBehaviour
 
         PersistentData.round++;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < PersistentData.raceReward; i++) {
             PersistentData.playerMoney += 1;
             yield return new WaitForSeconds(0.1f);
         }
-        PersistentData.playerMoney += Mathf.Clamp(PersistentData.playerMoney, 0, 25)  / 5;
+        for (int i = 0; i < Mathf.Clamp(PersistentData.playerMoney, 0, 25)  / 5; i++) {
+            PersistentData.playerMoney += 1;
+            yield return new WaitForSeconds(0.1f);
+        }
         //show money made, etc. etc.
 
     }
@@ -268,13 +277,16 @@ public class RaceManager : MonoBehaviour
 
     public void CreateBonusText(float quantity, int type, GameObject location, Card relatedCard = null) {
         //1 = add, 2 = mult
-        GameObject bonusText = Instantiate(BonusTextPrefab, Vector3.zero, Quaternion.identity, location.transform);
-        AudioManager.Instance.PlayScoreCalcRev();
-        bonusText.transform.localPosition = new Vector3(0, 0, 0) + new Vector3(0, 20, 0);
+        if (type == 1 && quantity == 0) return;
+        if (type == 2 && quantity == 1) return;
         StartCoroutine(UIPulse(location.transform.parent.gameObject));
         if (relatedCard != null) {
             StartCoroutine(relatedCard.Shake());
         }
+        AudioManager.Instance.PlayScoreCalcRev();
+        GameObject bonusText = Instantiate(BonusTextPrefab, Vector3.zero, Quaternion.identity, location.transform);
+        bonusText.transform.localPosition = new Vector3(0, 0, 0) + new Vector3(0, 20, 0);
+
         //bonusText.transform.SetParent(canvas.transform, true);
         bonusText.transform.SetAsLastSibling();
         switch (type) {

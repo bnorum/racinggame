@@ -103,6 +103,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         isOnSlot = false;
         cardInfoPanel.GetComponent<CardInfoPanel>().UpdateCardInfo(this);
+        Trash.Instance.heldCard = this;
 
         Debug.Log("Drag started!");
     }
@@ -160,7 +161,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
                 currentSlot = slot.GetComponent<Slot>();
             }
         }
-
+        Trash.Instance.heldCard = null;
         Debug.Log("Drag ended!");
     }
 

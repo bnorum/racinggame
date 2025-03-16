@@ -8,5 +8,7 @@ public class LightWheel : CardEffect
     {
 
         player.acceleration *= 0.6f;
+        RaceManager.Instance.CreateBonusText(0.6f, 2, RaceManager.Instance.accelerationText.gameObject, Card);
+
     }
 }
