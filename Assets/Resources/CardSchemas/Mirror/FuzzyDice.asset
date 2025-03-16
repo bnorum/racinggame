@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardEffectName: FuzzyDice
   cardName: Fuzzy Dice
-  cardDescription: Driver Power +0.2. Add 20% to all probabilities.
+  cardDescription: Driver Power +0.1. Add 20% to all probabilities.
   cardImage: {fileID: 0}
   price: 4
   cardType: 3
@@ -22,4 +22,4 @@ MonoBehaviour:
   cardQuantityType: 0
   cardBrand: 0
   cardRarity: 1
-  cardQuantityValue: 0.2
+  cardQuantityValue: 0.1

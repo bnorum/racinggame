@@ -5,10 +5,10 @@ public class SentimentalPicture : CardEffect
 {
 
     public override void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats() {
-        float addedDriverPower = 0.1f;
+        float addedDriverPower = 0.0f;
         float chance = 0.5f;
         while (Random.Range(0f, 1f) < (chance + PersistentData.chanceModifier)) {
-            addedDriverPower += 0.1f;
+            addedDriverPower += 0.05f;
         }
 
         player.driverPower +=addedDriverPower;
@@ -18,7 +18,7 @@ public class SentimentalPicture : CardEffect
 
 
     public override void UpdateCardDescription() {
-        Card.cardSchema.cardDescription = "Driver Power +0.1. " + (0.5f+PersistentData.chanceModifier)*100 + "% to add +0.1 driver power, repeating.";
+        Card.cardSchema.cardDescription = "Driver Power +0.1. " + (0.5f+PersistentData.chanceModifier)*100 + "% to add +0.05 driver power, repeating.";
     }
 
 

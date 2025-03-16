@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: SentimentalPicture
+  m_Name: AppointmentReminder
   m_EditorClassIdentifier: 
-  cardEffectName: SentimentalPicture
-  cardName: Sentimental Picture
-  cardDescription: Driver Power +0.1. 70% to add +0.05 driver power, repeating.
+  cardEffectName: AppointmentReminder
+  cardName: Appointment Reminder
+  cardDescription: When race number ends in 3, 6, or 9, gain +36.9 Speed and +36.9
+    Acceleration.
   cardImage: {fileID: 0}
   price: 4
   cardType: 4
-  cardQuantityModified: 1
+  cardQuantityModified: 3
   cardQuantityType: 0
   cardBrand: 2
-  cardRarity: 0
-  cardQuantityValue: 0.1
+  cardRarity: 2
+  cardQuantityValue: 0
