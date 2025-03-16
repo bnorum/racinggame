@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: HulaGirl
   m_EditorClassIdentifier: 
-  cardEffectName: SentimentalPicture
-  cardName: Sentimental Picture
-  cardDescription: Driver Power +0.1. 50% to add +0.1 driver power, repeating.
+  cardEffectName: HulaGirl
+  cardName: Hula Girl
+  cardDescription: Shakes every second during race. For every shake, gain +20 speed.
   cardImage: {fileID: 0}
-  price: 4
+  price: 3
   cardType: 4
   cardQuantityModified: 1
   cardQuantityType: 0
-  cardBrand: 2
-  cardRarity: 0
+  cardBrand: 1
+  cardRarity: 1
   cardQuantityValue: 0
