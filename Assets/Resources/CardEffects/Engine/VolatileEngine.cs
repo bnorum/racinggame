@@ -14,4 +14,10 @@ public class VolatileEngine : CardEffect
             Debug.Log("Safe!");
         }
     }
+
+    public override void UpdateCardDescription() {
+        Card.cardSchema.cardDescription = "Speed +35, " + (chance+PersistentData.chanceModifier)*100 + "% chance of exploding after race";
+    }
+
+    
 }

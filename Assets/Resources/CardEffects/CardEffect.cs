@@ -9,12 +9,13 @@ public class CardEffect : MonoBehaviour
     {
         Card = GetComponent<Card>();
         player = RaceManager.Instance.player;
+        UpdateCardDescription();
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-
+        UpdateCardDescription();
     }
 
     public virtual void ApplyCardEffectAtEndOfRace() {
@@ -34,7 +35,6 @@ public class CardEffect : MonoBehaviour
     }
 
     public virtual void OnBuy() {
-
     }
 
     public virtual void ConstantlyActive() {
@@ -42,6 +42,10 @@ public class CardEffect : MonoBehaviour
     }
 
     public virtual void ApplyCardEffectWhenRaceBegins() {
+
+    }
+
+    public virtual void UpdateCardDescription() {
 
     }
 }

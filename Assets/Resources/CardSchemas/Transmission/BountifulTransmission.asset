@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: VolatileEngine
+  m_Name: BountifulTransmission
   m_EditorClassIdentifier: 
-  cardEffectName: VolatileEngine
-  cardName: VolatileEngine
-  cardDescription: Speed +35, 33% chance of exploding after race.
-  cardImage: {fileID: 21300000, guid: 58293dadf217be14688449aa96ed0405, type: 3}
-  price: 4
-  cardType: 1
-  cardQuantityModified: 0
+  cardEffectName: BountifulTransmission
+  cardName: Social Transmission
+  cardDescription: 50% chance to give +20 Acceleration. 50% chance to double it and
+    give it to the next race.
+  cardImage: {fileID: 0}
+  price: 3
+  cardType: 2
+  cardQuantityModified: 2
   cardQuantityType: 0
-  cardBrand: 3
-  cardRarity: 0
-  cardQuantityValue: 35
+  cardBrand: 0
+  cardRarity: 2
+  cardQuantityValue: 0

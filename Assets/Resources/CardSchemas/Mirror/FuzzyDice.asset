@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
   m_Name: FuzzyDice
   m_EditorClassIdentifier: 
-  cardEffectName: 
+  cardEffectName: FuzzyDice
   cardName: Fuzzy Dice
   cardDescription: Driver Power +0.2. Add 20% to all probabilities.
   cardImage: {fileID: 0}
