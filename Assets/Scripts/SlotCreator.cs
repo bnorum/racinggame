@@ -27,12 +27,7 @@ public class SlotCreator : MonoBehaviour
                 break;
             case PersistentData.CarType.JAPANESE:
                 CreateRegularSlots();
-                GameObject extraEngineSlot = Instantiate(slotPrefab, topSlotHolder.transform);
-
-                extraEngineSlot.GetComponent<Slot>().cardType = CardSchema.CardType.ENGINE;
-                extraEngineSlot.transform.SetSiblingIndex(2);
-                topSlotHolder.GetComponent<HorizontalLayoutGroup>().spacing = -30f;
-                topSlotHolder.GetComponent<HorizontalLayoutGroup>().padding.left = -20;
+                GiveExtraEngine();
                 break;
             case PersistentData.CarType.GERMAN:
                 CreateRegularSlots();
@@ -41,11 +36,12 @@ public class SlotCreator : MonoBehaviour
             case PersistentData.CarType.MEXICAN:
                 CreateRegularSlots();
                 break;
-            case PersistentData.CarType.BRITISH:
+            case PersistentData.CarType.SOUTHAFRICAN:
                 CreateRegularSlots();
                 break;
             case PersistentData.CarType.PREHISTORIC:
                 CreateRegularSlots();
+                GiveHandCrank();
                 break;
         }
     }
@@ -71,5 +67,20 @@ public class SlotCreator : MonoBehaviour
         mirrorSlot.GetComponent<Slot>().cardType = CardSchema.CardType.MIRROR;
         EquipPanelManager.Instance.MirrorSlot = mirrorSlot.GetComponent<Slot>();
 
+    }
+
+    void GiveExtraEngine() {
+        GameObject extraEngineSlot = Instantiate(slotPrefab, topSlotHolder.transform);
+
+        extraEngineSlot.GetComponent<Slot>().cardType = CardSchema.CardType.ENGINE;
+        extraEngineSlot.transform.SetSiblingIndex(2);
+        topSlotHolder.GetComponent<HorizontalLayoutGroup>().spacing = -30f;
+        topSlotHolder.GetComponent<HorizontalLayoutGroup>().padding.left = -20;
+    }
+
+    void GiveHandCrank() {
+        Slot EngineSlot = EquipPanelManager.Instance.EngineSlot;
+        CardManager.Instance.GenerateNamedCard("HandCrank", EngineSlot);
+        EngineSlot.isLocked = true;
     }
 }

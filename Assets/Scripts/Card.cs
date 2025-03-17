@@ -86,7 +86,7 @@ public class Card : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
         isEnabledImage.gameObject.SetActive(!isEnabled);
     }
 
-    private bool IsPointerOverUIElement(RectTransform rectTransform)
+    public bool IsPointerOverUIElement(RectTransform rectTransform)
     {
         // Get the current mouse or touch position
         Vector2 screenPosition = Input.mousePosition; // For mouse

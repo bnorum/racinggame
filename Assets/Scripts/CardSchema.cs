@@ -26,4 +26,6 @@ public class CardSchema : ScriptableObject
 
     public float cardQuantityValue;
 
+    public bool isDevilsMachineCard = false;
+
 }

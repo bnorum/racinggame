@@ -11,35 +11,10 @@ public class SceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    public void StartGameAsUnitedStates() {
-        PersistentData.playerCarType = PersistentData.CarType.AMERICAN;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartGameAsJapan() {
-        PersistentData.playerCarType = PersistentData.CarType.JAPANESE;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartGameAsGermany() {
-        PersistentData.playerCarType = PersistentData.CarType.GERMAN;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartGameAsMexico() {
-        PersistentData.playerCarType = PersistentData.CarType.MEXICAN;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-
-    public void StartGameAsBritain() {
-        PersistentData.playerCarType = PersistentData.CarType.BRITISH;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
-    }
-    public void StartGameAsPrehistoric() {
-        PersistentData.playerCarType = PersistentData.CarType.PREHISTORIC;
+    public void StartGame() {
         UnityEngine.SceneManagement.SceneManager.LoadScene("MainScene");
     }
 

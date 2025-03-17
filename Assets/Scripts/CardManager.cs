@@ -92,7 +92,7 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        if (isDupe) {
+        if ((isDupe || cardSchema.name == "HandCrank") && cardSchema.name != "DevilsMachineWheel") {
             return GenerateRandomCard(slot);
         } else {
             GameObject card = Instantiate(cardPrefab, slot.gameObject.transform);
@@ -100,4 +100,37 @@ public class CardManager : MonoBehaviour
             return card;
         }
     }
+
+    public GameObject GenerateNamedCard(string name, Slot slot) {
+        CardSchema cardSchema = null;
+        foreach (CardSchema schema in cardSchemas) {
+            if (schema.name == name) {
+                cardSchema = schema;
+                break;
+            }
+        }
+
+        bool isDupe = false;
+        foreach (Card shopCard in ShopPanelManager.Instance.CardsInShop) {
+            if (shopCard.cardSchema == cardSchema) {
+                isDupe = true;
+                break;
+            }
+        }
+        foreach (Card equipCard in EquipPanelManager.Instance.Cards) {
+            if (equipCard.cardSchema == cardSchema) {
+                isDupe = true;
+                break;
+            }
+        }
+
+        if (isDupe) {
+            return GenerateNamedCard(name, slot);
+        } else {
+            GameObject card = Instantiate(cardPrefab, slot.gameObject.transform);
+            card.GetComponent<Card>().cardSchema = cardSchema;
+            slot.AddCardToSlot(card.GetComponent<Card>());
+            return card;
+        }
+    } 
 }
