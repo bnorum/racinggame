@@ -19,7 +19,7 @@ public class CardSchema : ScriptableObject
     public CardQuantityModified cardQuantityModified;
     public enum CardQuantityType {ADD, MULTIPLY}
     public CardQuantityType cardQuantityType;
-    public enum CardBrand {HORSE, GOAT, CHEETAH, GAZELLE}
+    public enum CardBrand {HORSE, GOAT, CHEETAH, GAZELLE, DEVIL}
     public CardBrand cardBrand;
     public enum CardRarity {COMMON, UNCOMMON, RARE, EPIC, LEGENDARY}
     public CardRarity cardRarity;

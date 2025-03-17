@@ -28,7 +28,7 @@ public class DevilsMachineDash : CardEffect
 
     public override void Update()
     {
-
+        base.Update();
         if (activated == false) {
             devilsMachineParts = 0;
             foreach (Card card in EquipPanelManager.Instance.Cards) {

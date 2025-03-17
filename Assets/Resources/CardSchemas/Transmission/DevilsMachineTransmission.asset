@@ -20,7 +20,7 @@ MonoBehaviour:
   cardType: 2
   cardQuantityModified: 2
   cardQuantityType: 0
-  cardBrand: 0
+  cardBrand: 4
   cardRarity: 2
   cardQuantityValue: 0
   isDevilsMachineCard: 1
