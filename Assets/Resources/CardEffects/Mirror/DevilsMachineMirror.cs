@@ -5,7 +5,7 @@ public class DevilsMachineMirror : CardEffect
     public bool activated = false;
     public int devilsMachineParts = 0;
 
-    public override void ApplyCardEffectAtStartOfRaceAfterCalculatingStats()
+    public override void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats()
     {
         if (activated) {
             player.driverPower += 0.333f;

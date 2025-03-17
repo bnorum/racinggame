@@ -7,7 +7,7 @@ public class DevilsMachineEngine : CardEffect
     public int devilsMachineParts = 0;
 
 
-    public override void ApplyCardEffectAtStartOfRaceAfterCalculatingStats()
+    public override void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats()
     {
         if (activated) {
             player.maxSpeed += 666f;
