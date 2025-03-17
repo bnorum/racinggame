@@ -37,6 +37,14 @@ public class AudioManager : MonoBehaviour
         ScoreCalcRev.Play();
     }
 
+    public void PlayScoreCalcRevNegative() {
+
+        ScoreCalcRev.pitch -= 0.05f;
+
+        ScoreCalcRev.time = 0;
+        ScoreCalcRev.Play();
+    }
+
     public void ResetScoreCalcRev() {
         ScoreCalcRev.pitch = 1f;
     }

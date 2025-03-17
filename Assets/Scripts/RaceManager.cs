@@ -299,7 +299,11 @@ public class RaceManager : MonoBehaviour
         if (relatedCard != null) {
             StartCoroutine(relatedCard.Shake());
         }
-        AudioManager.Instance.PlayScoreCalcRev();
+        if (type == 1 && quantity < 0 || type == 2 && quantity < 1) {
+            AudioManager.Instance.PlayScoreCalcRevNegative();
+        } else {
+            AudioManager.Instance.PlayScoreCalcRev();
+        }
         GameObject bonusText = Instantiate(BonusTextPrefab, Vector3.zero, Quaternion.identity, location.transform);
         bonusText.transform.localPosition = new Vector3(0, 0, 0) + new Vector3(0, 20, 0);
 
@@ -307,7 +311,8 @@ public class RaceManager : MonoBehaviour
         bonusText.transform.SetAsLastSibling();
         switch (type) {
             case 1:
-                bonusText.GetComponent<TextMeshProUGUI>().text = "+" + quantity.ToString("F2");
+                if (quantity > 0) bonusText.GetComponent<TextMeshProUGUI>().text = "+" + quantity.ToString("F2");
+                if (quantity < 0) bonusText.GetComponent<TextMeshProUGUI>().text = quantity.ToString("F2");
                 break;
             case 2:
                 bonusText.GetComponent<TextMeshProUGUI>().text = "x" + quantity.ToString("F2");
