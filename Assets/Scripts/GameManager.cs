@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
 
     public CanvasScaler canvasScaler;
 
+    public RawImage renderTextureDisplay;
+    public RenderTexture verticalRenderTexture;
+    public RenderTexture horizontalRenderTexture;
+
     void Awake()
     {
         if (Instance == null) {
@@ -19,14 +23,17 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         DecideResolution();
+
     }
     public void DecideResolution() {
         if (Screen.width > Screen.height) {
             //landscape
             canvasScaler.matchWidthOrHeight = 0f;
+            renderTextureDisplay.texture = horizontalRenderTexture;
         } else {
             //portrait
             canvasScaler.matchWidthOrHeight = 1f;
+            renderTextureDisplay.texture = verticalRenderTexture;
         }
     }
 
