@@ -103,6 +103,10 @@ public class RaceManager : MonoBehaviour
     public void CalibrateRaceTrack() {
 
         road.transform.localScale = new Vector3(road.transform.localScale.x, road.transform.localScale.y, PersistentData.raceLength + 20);
+        road.transform.GetChild(0).GetComponent<Renderer>().material.mainTextureScale = new Vector2(1, PersistentData.raceLength / 10f);
+        road.transform.GetChild(1).GetComponent<Renderer>().material.mainTextureScale = new Vector2(1, PersistentData.raceLength / 10f);
+        road.transform.GetChild(2).GetComponent<Renderer>().material.mainTextureScale = new Vector2(1, PersistentData.raceLength / 10f);
+
         finishLine.transform.position = road.transform.position + new Vector3(0, 0, PersistentData.raceLength);
         cameraAngles[2].position = cameraAngles[0].position + new Vector3(0, 0, PersistentData.raceLength/2);
         cameraAngles[3].position = cameraAngles[1].position + new Vector3(0, 15, PersistentData.raceLength + 25f);

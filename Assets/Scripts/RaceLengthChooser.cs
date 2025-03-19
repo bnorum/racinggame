@@ -27,6 +27,8 @@ public class RaceLengthChooser : MonoBehaviour
     public List<string> locations;
     public List<Sprite> locationImages = new List<Sprite>();
 
+    public List<GameObject> buildingPrefabs = new List<GameObject>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -91,6 +93,21 @@ public class RaceLengthChooser : MonoBehaviour
             PersistentData.raceReward = 3;
         }
 
+        CreateBuildingsAlongLength(PersistentData.raceLength);
         RaceManager.Instance.HeadToStart();
+    }
+
+
+    public void CreateBuildingsAlongLength(float length) {
+        float distanceBetweenBuildings = 50f;
+        float numberOfBuildings = length / distanceBetweenBuildings;
+        for (int i = 0; i < numberOfBuildings; i++) {
+            int buildingChoice = Random.Range(0, buildingPrefabs.Count);
+            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(-25, 0, i * distanceBetweenBuildings), Quaternion.identity);
+        }
+        for (int i = 0; i < numberOfBuildings; i++) {
+            int buildingChoice = Random.Range(0, buildingPrefabs.Count);
+            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(25, 0, i * distanceBetweenBuildings), Quaternion.identity);
+        }
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 455c7323b55616647b540f4c7c924b97
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 259777
+  packageName: URP Toon Shader
+  packageVersion: 1.0.3
+  assetPath: Assets/CiroContinisio/ToonShader/Example/Settings/URP-GlobalSettings.asset
+  uploadId: 671685
