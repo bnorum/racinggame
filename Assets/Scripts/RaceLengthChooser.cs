@@ -103,11 +103,11 @@ public class RaceLengthChooser : MonoBehaviour
         float numberOfBuildings = length / distanceBetweenBuildings;
         for (int i = 0; i < numberOfBuildings; i++) {
             int buildingChoice = Random.Range(0, buildingPrefabs.Count);
-            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(-25, 0, i * distanceBetweenBuildings), Quaternion.identity);
+            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(-25, -1.75f, i * distanceBetweenBuildings), Quaternion.identity);
         }
         for (int i = 0; i < numberOfBuildings; i++) {
             int buildingChoice = Random.Range(0, buildingPrefabs.Count);
-            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(25, 0, i * distanceBetweenBuildings), Quaternion.identity);
+            GameObject building = Instantiate(buildingPrefabs[buildingChoice], new Vector3(25, -1.75f, i * distanceBetweenBuildings), Quaternion.identity);
         }
     }
 }

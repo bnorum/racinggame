@@ -29,10 +29,13 @@ public class RaceManager : MonoBehaviour
 
     public Camera cam;
     public List<Transform> cameraAngles = new List<Transform>();
+    public int activeCameraAngle = 0;
 
     public GameObject ShopPanel;
     public GameObject RaceStatsPanel;
     public GameObject PostRacePanel;
+    public GameObject ReturnToGarageButton;
+    public TextMeshProUGUI RaceStatsText;
     public GameObject HeadToStartButton;
     public GameObject StartRaceButton;
     public GameObject TrashCan;
@@ -84,20 +87,33 @@ public class RaceManager : MonoBehaviour
             EndRace(false);
         }
 
-        if (player.distanceTraveled > PersistentData.raceLength/2 - 20) {
+
+        if (player.distanceTraveled > PersistentData.raceLength*0.9f) {
+            SelectCameraAngle(3);
+        }
+        else if (player.distanceTraveled > PersistentData.raceLength/2 + 20) {
+            SelectCameraAngle(6);
+        }
+        else if (player.distanceTraveled > PersistentData.raceLength/2 - 20) {
             SelectCameraAngle(2);
         }
 
-        if (player.distanceTraveled > PersistentData.raceLength*0.75f) {
-            SelectCameraAngle(3);
+
+
+        if (activeCameraAngle == 5 || activeCameraAngle == 6) {
+            cam.fieldOfView = 60 + player.currentSpeed / player.maxSpeed * 50f;
+        } else {
+            cam.fieldOfView = 60f;
         }
 
     }
 
     public void SelectCameraAngle(int anglenum) {
 
-        cam.gameObject.transform.position = cameraAngles[anglenum].position;
-        cam.gameObject.transform.rotation = cameraAngles[anglenum].rotation;
+        cam.transform.SetParent(cameraAngles[anglenum]);
+        cam.gameObject.transform.localPosition = Vector3.zero;
+        cam.gameObject.transform.localRotation = Quaternion.identity;
+        activeCameraAngle = anglenum;
     }
 
     public void CalibrateRaceTrack() {
@@ -220,7 +236,7 @@ public class RaceManager : MonoBehaviour
         StartRaceButton.SetActive(false);
 
         CalibrateRaceTrack();
-        SelectCameraAngle(1);
+        SelectCameraAngle(5);
 
 
         player.carState = Car.CarState.RACING;
@@ -255,19 +271,30 @@ public class RaceManager : MonoBehaviour
         ShopPanel.SetActive(false);
         StartRaceButton.SetActive(false);
         HeadToStartButton.SetActive(false);
-
-
+        RaceStatsText.text = "";
+        yield return new WaitForSeconds(0.2f);
+        RaceStatsText.text += "Round " + PersistentData.round.ToString() + "\n\n";
         PersistentData.round++;
+        yield return new WaitForSeconds(0.2f);
+        RaceStatsText.text += "Cash Reward: ";
 
         for (int i = 0; i < PersistentData.raceReward; i++) {
             PersistentData.playerMoney += 1;
+            RaceStatsText.text += "$";
             yield return new WaitForSeconds(0.1f);
         }
+        yield return new WaitForSeconds(0.2f);
+        RaceStatsText.text += "\nInterest: ";
         for (int i = 0; i < Mathf.Clamp(PersistentData.playerMoney, 0, 25)  / 5; i++) {
             PersistentData.playerMoney += 1;
+            RaceStatsText.text += "$";
             yield return new WaitForSeconds(0.1f);
         }
+        yield return new WaitForSeconds(0.2f);
+        RaceStatsText.text += "\n\nTotal Reward: $" + (PersistentData.raceReward + Mathf.Clamp(PersistentData.playerMoney, 0, 25) / 5);
         //show money made, etc. etc.
+
+        ReturnToGarageButton.SetActive(true);
 
     }
 
@@ -282,6 +309,7 @@ public class RaceManager : MonoBehaviour
         TrashCan.SetActive(true);
         MoneyText.SetActive(true);
         RerollButton.SetActive(true);
+        ReturnToGarageButton.SetActive(false);
 
         player.transform.position = playerStart.position;
         GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();
