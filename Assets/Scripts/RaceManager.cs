@@ -90,21 +90,25 @@ public class RaceManager : MonoBehaviour
 
         if (player.distanceTraveled > PersistentData.raceLength*0.9f) {
             SelectCameraAngle(3);
-        }
-        else if (player.distanceTraveled > PersistentData.raceLength/2 + 20) {
+        } else if (player.distanceTraveled > PersistentData.raceLength/2 + 20) {
             SelectCameraAngle(6);
-        }
-        else if (player.distanceTraveled > PersistentData.raceLength/2 - 20) {
+        } else if (player.distanceTraveled > PersistentData.raceLength/2 - 20
+        && player.currentSpeed < 150f) {
             SelectCameraAngle(2);
         }
 
 
 
-        if (activeCameraAngle == 5 || activeCameraAngle == 6) {
-            cam.fieldOfView = 60 + player.currentSpeed / player.maxSpeed * 50f;
+        if (activeCameraAngle == 5) {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, 60 + player.currentSpeed / 150 * 70f, Time.deltaTime);
+            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 60, 160);
+        } else if (activeCameraAngle == 6) {
+            cam.fieldOfView = 60 + player.currentSpeed / 150 * 70f;
+            cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 60, 160);
         } else {
             cam.fieldOfView = 60f;
         }
+
 
     }
 
