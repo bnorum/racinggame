@@ -57,6 +57,8 @@ public class RaceManager : MonoBehaviour
 
     public GameObject BonusTextPrefab;
 
+    Coroutine carShaking;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -164,6 +166,8 @@ public class RaceManager : MonoBehaviour
         player.distanceTraveled = 0f;
         SelectCameraAngle(0);
 
+
+
         //One day, these will have animations attached. Stay tuned.
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
@@ -241,7 +245,7 @@ public class RaceManager : MonoBehaviour
 
         CalibrateRaceTrack();
         SelectCameraAngle(5);
-
+        carShaking = StartCoroutine(player.ShakeCar());
 
         player.carState = Car.CarState.RACING;
         raceActive = true;
@@ -264,8 +268,12 @@ public class RaceManager : MonoBehaviour
         }
         if (playerWon) {
             StartCoroutine(CreateEndOfRoundScreen());
+            StopCoroutine(carShaking);
+            player.CarModel.transform.localPosition = new Vector3(0, 0, 0);
         } else {
             GameOver();
+            StopCoroutine(carShaking);
+            player.CarModel.transform.localPosition = new Vector3(0, 0, 0);
         }
     }
 

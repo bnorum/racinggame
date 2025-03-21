@@ -15,6 +15,9 @@ public class Car : MonoBehaviour
     public float baseDriverPower = 1f;
 
 
+    public GameObject CarModel;
+
+
 
     public enum CarState {
         RACING,
@@ -164,7 +167,7 @@ public class Car : MonoBehaviour
             }
         }
 
-        
+
 
 
 
@@ -181,6 +184,21 @@ public class Car : MonoBehaviour
 
     public void GetCards() {
         cards = EquipPanelManager.Instance.GetCards();
+    }
+
+    public System.Collections.IEnumerator ShakeCar() {
+        Vector3 originalPosition = transform.position;
+        float shakeMagnitude = 0.1f;
+        float elapsed = 0.0f;
+
+        while (true) {
+            float x = Random.Range(-0.1f, 0.1f) * shakeMagnitude;
+            CarModel.transform.position += new Vector3(x, 0, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+
     }
 
 }
