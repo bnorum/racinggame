@@ -59,6 +59,8 @@ public class RaceManager : MonoBehaviour
 
     Coroutine carShaking;
 
+    public bool halfwayTriggered = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -109,6 +111,15 @@ public class RaceManager : MonoBehaviour
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, 60, 160);
         } else {
             cam.fieldOfView = 60f;
+        }
+
+        if (player.distanceTraveled > PersistentData.raceLength / 2 && !halfwayTriggered) {
+            halfwayTriggered = true;
+            foreach(Card card in EquipPanelManager.Instance.Cards) {
+                if (card.cardEffect != null) {
+                    card.cardEffect.ApplyCardEffectHalfwayThroughRace();
+                }
+            }
         }
 
 
@@ -322,6 +333,7 @@ public class RaceManager : MonoBehaviour
         MoneyText.SetActive(true);
         RerollButton.SetActive(true);
         ReturnToGarageButton.SetActive(false);
+        halfwayTriggered = false;
 
         player.transform.position = playerStart.position;
         GameObject.Find("ShopPanel").GetComponent<ShopPanelManager>().FillShop();

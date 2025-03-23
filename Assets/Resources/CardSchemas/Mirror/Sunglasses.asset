@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BicycleWheel
+  m_Name: Sunglasses
   m_EditorClassIdentifier: 
-  cardEffectName: BicycleWheel
-  cardName: Double Trouble
-  cardDescription: If you have 2 wheels, gain x1.5 speed and x1.5 acceleration
+  cardEffectName: Sunglasses
+  cardName: Sunglasses
+  cardDescription: For every GOAT brand card, gain +0.05 Driver Power.
   cardImage: {fileID: 0}
-  price: 5
-  cardType: 5
-  cardQuantityModified: 3
-  cardQuantityType: 1
-  cardBrand: 0
-  cardRarity: 2
+  price: 3
+  cardType: 3
+  cardQuantityModified: 1
+  cardQuantityType: 0
+  cardBrand: 1
+  cardRarity: 0
   cardQuantityValue: 0
   isDevilsMachineCard: 0

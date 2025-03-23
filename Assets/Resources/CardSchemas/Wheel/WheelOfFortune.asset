@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BicycleWheel
+  m_Name: WheelOfFortune
   m_EditorClassIdentifier: 
-  cardEffectName: BicycleWheel
-  cardName: Double Trouble
-  cardDescription: If you have 2 wheels, gain x1.5 speed and x1.5 acceleration
+  cardEffectName: WheelOfFortune
+  cardName: WheelOfFortune
+  cardDescription: 30% chance to get $3 at start of race, halfway through race, and
+    end of race.
   cardImage: {fileID: 0}
   price: 5
   cardType: 5
   cardQuantityModified: 3
-  cardQuantityType: 1
-  cardBrand: 0
-  cardRarity: 2
+  cardQuantityType: 0
+  cardBrand: 2
+  cardRarity: 0
   cardQuantityValue: 0
   isDevilsMachineCard: 0

@@ -22,6 +22,10 @@ public class CardEffect : MonoBehaviour
 
     }
 
+    public virtual void ApplyCardEffectHalfwayThroughRace() {
+
+    }
+
     public virtual void ApplyCardEffectAtStartOfRaceBeforeCalculatingStats() {
 
     }
