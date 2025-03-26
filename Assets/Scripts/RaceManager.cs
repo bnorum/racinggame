@@ -194,7 +194,7 @@ public class RaceManager : MonoBehaviour
         player.statsCalculated = false;
 
 
-
+        
         foreach(Card card in EquipPanelManager.Instance.Cards) {
             if (card.cardEffect != null) {
                 card.cardEffect.ApplyCardEffectAtStartOfRaceAfterCalculatingStats();

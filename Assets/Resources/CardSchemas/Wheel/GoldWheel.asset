@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54457d971c715849b3a2bb8baeb96f7, type: 3}
-  m_Name: BaseballCard
+  m_Name: GoldWheel
   m_EditorClassIdentifier: 
-  cardEffectName: BaseballCard
-  cardName: Baseball Card
-  cardDescription: +0.2 Driver Power. When sold, permanently gain +0.1 Driver Power.
+  cardEffectName: GoldWheel
+  cardName: Gold Wheel
+  cardDescription: For every $1 owned, gain +1 Speed.
   cardImage: {fileID: 0}
   price: 5
-  cardType: 4
-  cardQuantityModified: 1
+  cardType: 5
+  cardQuantityModified: 0
   cardQuantityType: 0
-  cardBrand: 3
-  cardRarity: 1
-  cardQuantityValue: 0.2
+  cardBrand: 2
+  cardRarity: 2
+  cardQuantityValue: 0
   isDevilsMachineCard: 0

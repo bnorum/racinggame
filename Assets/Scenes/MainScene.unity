@@ -8023,6 +8023,7 @@ MonoBehaviour:
   driverPowerText: {fileID: 346063248}
   driverPowerOGPosition: {x: 0, y: 0, z: 0}
   BonusTextPrefab: {fileID: 3999713470359117415, guid: a09901db9cbe6c047a9878e9472422d8, type: 3}
+  halfwayTriggered: 0
 --- !u!4 &2142566010
 Transform:
   m_ObjectHideFlags: 0

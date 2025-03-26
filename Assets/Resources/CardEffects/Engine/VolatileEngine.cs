@@ -19,5 +19,5 @@ public class VolatileEngine : CardEffect
         Card.cardSchema.cardDescription = "Speed +35, " + (chance+PersistentData.chanceModifier)*100 + "% chance of exploding after race";
     }
 
-    
+
 }
